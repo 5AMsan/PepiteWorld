@@ -1,0 +1,149 @@
+.main-navigation {
+    clear: both;
+    display: block;
+    float: left;
+    width: 100%;
+    ul {
+        display: none;
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        ul {
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+            float: left;
+            position: absolute;
+            top: 100%;
+            left: -999em;
+            z-index: 99999;
+            ul {
+                left: -999em;
+                top: 0;
+            }
+            li {
+                &:hover>ul,
+                &.focus>ul {
+                    left: 100%;
+                }
+            }
+            a {
+                width: 200px;
+            }
+             :hover>a,
+            .focus>a {}
+            a:hover,
+            a.focus {}
+        }
+        li:hover>ul,
+        li.focus>ul {
+            left: auto;
+        }
+    }
+    li {
+        float: left;
+        position: relative;
+        &:hover>a,
+        &.focus>a {}
+    }
+    a {
+        display: block;
+        text-decoration: none;
+    }
+    .current_page_item>a,
+    .current-menu-item>a,
+    .current_page_ancestor>a,
+    .current-menu-ancestor>a {}
+}
+
+
+/* Small menu. */
+
+.menu-toggle,
+.main-navigation.toggled ul {
+    display: block;
+}
+
+@media screen and (min-width: 37.5em) {
+    .menu-toggle {
+        display: none;
+    }
+    .main-navigation ul {
+        display: block;
+    }
+}
+
+.comment-navigation,
+.posts-navigation,
+.post-navigation {
+    .site-main & {
+        margin: 0 0 1.5em;
+        overflow: hidden;
+    }
+    .nav-previous {
+        float: left;
+        width: 50%;
+    }
+    .nav-next {
+        float: right;
+        text-align: right;
+        width: 50%;
+    }
+}
+
+nav a {
+    text-decoration: none;
+}
+
+#projet-nav,
+#edition-nav {
+    z-index: 9;
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            list-style: none;
+            border-collapse: collapse;
+            border: 1px solid #333333;
+            padding: .5rem;
+            &:not(:last-of-type) {
+                border-bottom: none;
+            }
+        }
+    }
+}
+#post-projet {
+    .infobar {
+        margin-left: 12rem;
+
+    }
+    .infobar:not(.no-nav) + #projet-nav {
+        margin-top: -2.4rem;
+
+    }
+}
+#post-risographie {
+    .infobar {
+        margin-bottom: 6rem;
+
+    }
+}
+
+
+
+/** Extended links **/
+
+*:not(label)[data-link] {
+    cursor: pointer;
+    // & * {
+    //     cursor: initial;
+    // }
+}
+
+#post-font {
+    [data-link]>a:first-of-type {
+        display: none;
+    }
+    .fontsampler-ui-block-buy a,
+    .fontsampler-ui-block-specimen a {
+        display: none;
+    }
+}

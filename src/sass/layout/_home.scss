@@ -1,0 +1,102 @@
+#post-home {
+    .content {
+        font-size: 40px;
+
+        *:last-child {
+            margin-bottom: 0;
+        }
+
+        .studio-fx {
+            .studio-fx__bg {
+                background-color: transparent;
+                -webkit-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+                -moz-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+                -ms-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+                -o-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+                transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+            }
+        }
+    }
+}
+
+#post-direction-artistique,
+#post-editions {
+    .content {
+        padding-left: 0rem;
+    }
+}
+
+#post-font {
+
+    .fontsampler-nav-item {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $color__border-square;
+        
+        // cursor: pointer;
+        //  & > * {
+        //      pointer-events: none;
+        //  }
+        
+        .font-title {
+            flex-basis: 100%;
+        }
+        .font-author, .font-variants {
+            flex-basis: 50%;
+        }
+        .font-variants {
+            text-align: right;
+        }
+        /** Font sampler title only **/
+        .fontsampler-ui-block:not(.full) {
+            display: none ;
+        }
+        .type-tester__content {
+            font-size: 90px !important;
+            text-align: center !important;
+        }
+
+
+    }
+    
+    .fontsampler-interface .selectric > .label,
+    .fontsampler-interface .selectric > .button {
+        background-color: white;
+    }
+}
+
+.content-wrapper {
+
+    & > .fontsampler-wrapper, 
+    & > .font-info {
+        margin-bottom: 3rem; 
+        padding-bottom: 4rem; 
+        border-bottom: 1px solid $color__border-square;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        .column {
+            @include column-width(2);
+        }
+    }
+
+    // .font-info {
+
+    // }
+
+}
+
+button ~ button {
+	margin-left: 1rem;
+}
+
+.tab-title {
+
+    a {
+        text-decoration: none;
+    }
+}

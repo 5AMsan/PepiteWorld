@@ -1,0 +1,274 @@
+# Copyright (C) 2017 Automattic
+# This file is distributed under the GNU General Public License v2 or later.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: _s 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
+"POT-Creation-Date: 2020-06-19 08:48+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_x;_n\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: __BAK\n"
+
+#: functions.php:290
+msgid "Style"
+msgstr ""
+
+#: inc/custom-post-types.php:9 inc/custom-post-types.php:11
+#: inc/custom-post-types.php:12
+msgid "Projets"
+msgstr ""
+
+#: inc/custom-post-types.php:10 inc/custom-post-types.php:39
+msgid "Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:13
+msgid "Projets archives"
+msgstr ""
+
+#: inc/custom-post-types.php:14 inc/custom-post-types.php:63
+#: inc/custom-post-types.php:112
+msgid "Item Attributes"
+msgstr ""
+
+#: inc/custom-post-types.php:15 inc/custom-post-types.php:64
+#: inc/custom-post-types.php:113
+msgid "Parent Item:"
+msgstr ""
+
+#: inc/custom-post-types.php:16 inc/custom-post-types.php:65
+#: inc/custom-post-types.php:114
+msgid "All Items"
+msgstr ""
+
+#: inc/custom-post-types.php:17 inc/custom-post-types.php:66
+#: inc/custom-post-types.php:115
+msgid "Add New Item"
+msgstr ""
+
+#: inc/custom-post-types.php:18
+msgid "Add Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:19
+msgid "New Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:20
+msgid "Edit Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:21
+msgid "Update Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:22
+msgid "View Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:23
+msgid "View Projets"
+msgstr ""
+
+#: inc/custom-post-types.php:24
+msgid "Search Projet"
+msgstr ""
+
+#: inc/custom-post-types.php:25 inc/custom-post-types.php:74
+#: inc/custom-post-types.php:123
+msgid "Not found"
+msgstr ""
+
+#: inc/custom-post-types.php:26 inc/custom-post-types.php:75
+#: inc/custom-post-types.php:124
+msgid "Not found in Trash"
+msgstr ""
+
+#: inc/custom-post-types.php:27 inc/custom-post-types.php:76
+#: inc/custom-post-types.php:125
+msgid "Featured Image"
+msgstr ""
+
+#: inc/custom-post-types.php:28 inc/custom-post-types.php:77
+#: inc/custom-post-types.php:126
+msgid "Set featured image"
+msgstr ""
+
+#: inc/custom-post-types.php:29 inc/custom-post-types.php:78
+#: inc/custom-post-types.php:127
+msgid "Remove featured image"
+msgstr ""
+
+#: inc/custom-post-types.php:30 inc/custom-post-types.php:79
+#: inc/custom-post-types.php:128
+msgid "Use as featured image"
+msgstr ""
+
+#: inc/custom-post-types.php:31 inc/custom-post-types.php:80
+#: inc/custom-post-types.php:129
+msgid "Insert into item"
+msgstr ""
+
+#: inc/custom-post-types.php:32 inc/custom-post-types.php:81
+#: inc/custom-post-types.php:130
+msgid "Uploaded to this item"
+msgstr ""
+
+#: inc/custom-post-types.php:33 inc/custom-post-types.php:82
+#: inc/custom-post-types.php:131
+msgid "Items list"
+msgstr ""
+
+#: inc/custom-post-types.php:34 inc/custom-post-types.php:83
+#: inc/custom-post-types.php:132
+msgid "Items list navigation"
+msgstr ""
+
+#: inc/custom-post-types.php:35 inc/custom-post-types.php:84
+#: inc/custom-post-types.php:133
+msgid "Filter items list"
+msgstr ""
+
+#: inc/custom-post-types.php:40
+msgid "Projets from Pépite"
+msgstr ""
+
+#: inc/custom-post-types.php:58 inc/custom-post-types.php:60
+#: inc/custom-post-types.php:61
+msgid "Fonts"
+msgstr ""
+
+#: inc/custom-post-types.php:59 inc/custom-post-types.php:88
+msgid "Font"
+msgstr ""
+
+#: inc/custom-post-types.php:62
+msgid "Fonts archives"
+msgstr ""
+
+#: inc/custom-post-types.php:67
+msgid "Add Font"
+msgstr ""
+
+#: inc/custom-post-types.php:68
+msgid "New Font"
+msgstr ""
+
+#: inc/custom-post-types.php:69
+msgid "Edit Font"
+msgstr ""
+
+#: inc/custom-post-types.php:70
+msgid "Update Font"
+msgstr ""
+
+#: inc/custom-post-types.php:71
+msgid "View Font"
+msgstr ""
+
+#: inc/custom-post-types.php:72
+msgid "View Fonts"
+msgstr ""
+
+#: inc/custom-post-types.php:73
+msgid "Search Font"
+msgstr ""
+
+#: inc/custom-post-types.php:89
+msgid "Fonts from Pépite"
+msgstr ""
+
+#: inc/custom-post-types.php:107 inc/custom-post-types.php:109
+#: inc/custom-post-types.php:110
+msgid "Editions"
+msgstr ""
+
+#: inc/custom-post-types.php:108 inc/custom-post-types.php:137
+msgid "Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:111
+msgid "Editions archives"
+msgstr ""
+
+#: inc/custom-post-types.php:116
+msgid "Add Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:117
+msgid "New Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:118
+msgid "Edit Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:119
+msgid "Update Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:120
+msgid "View Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:121
+msgid "View Editions"
+msgstr ""
+
+#: inc/custom-post-types.php:122
+msgid "Search Edition"
+msgstr ""
+
+#: inc/custom-post-types.php:138
+msgid "Editions from Pépite"
+msgstr ""
+
+#: inc/customizer.php:16
+msgid "Options Pépite World"
+msgstr ""
+
+#: inc/customizer.php:21
+msgid "Options visuelles"
+msgstr ""
+
+#: inc/customizer.php:25
+msgid "Couleurs"
+msgstr ""
+
+#: inc/customizer.php:37
+msgid "Bordure pour les onglets"
+msgstr ""
+
+#: inc/customizer.php:67
+msgid "Arrondi de la bordure en pixel"
+msgstr ""
+
+#: inc/template-tags.php:82
+#, php-format
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr ""
+
+#: inc/template-tags.php:99 template-parts/content-page.php:37
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: template-parts/content-none.php:24
+#, php-format
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: template-parts/content.php:39
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""

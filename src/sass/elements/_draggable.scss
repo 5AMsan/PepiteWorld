@@ -1,0 +1,7 @@
+.draggable {
+    opacity: 1;
+    transition: opacity .5s ease-in-out 1s;
+    &:not(.ui-draggable) {
+        opacity: 0;
+    }
+}

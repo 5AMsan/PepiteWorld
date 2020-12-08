@@ -1,0 +1,39 @@
+a {
+	color: $color__link;
+	&:visited {
+		color: $color__link-visited;
+	}
+	&:hover,
+	&:focus,
+	&:active {
+		color: $color__link-hover;
+	}
+	&:focus {
+		outline: thin dotted;
+	}
+	&:hover,
+	&:active {
+		outline: 0;
+	}
+}
+
+*[id |="a-rel"] {
+	color: $color__text-main !important;
+}
+a[rel="mailto"] {
+	font-weight: bold;
+}
+a[rel="social-network"] {
+	font-style: italic;
+}
+a[rel="heart"] {
+	& > span {
+		display: none;
+	}
+}
+button ~ button, 
+.button ~ .button,
+button ~ .button, 
+.button ~ button {
+	margin-left: 1rem;
+}

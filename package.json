@@ -1,0 +1,31 @@
+{
+  "name": "pepite-world",
+  "version": "0.1.0",
+  "description": "[![Build Status](https://travis-ci.org/Automattic/_s.svg?branch=master)](https://travis-ci.org/Automattic/_s)",
+  "main": "src/app.js",
+  "private": true,
+  "dependencies": {
+    "@vimeo/player": "^2.13.0",
+    "jquery": "^3.5.1",
+    "micromodal": "^0.4.6"
+  },
+  "devDependencies": {
+    "@glidejs/glide": "latest",
+    "css-loader": "^3.5.3",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.0.0",
+    "mini-css-extract-plugin": "^0.11.2",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "webpack": "webpack",
+    "dev": "npm run webpack -- --mode development --watch",
+    "build": "npm run webpack -- --mode production"
+  },
+  "author": "5AMsan",
+  "license": "MIT"
+}

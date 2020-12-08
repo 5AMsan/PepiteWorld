@@ -1,0 +1,482 @@
+// assets
+$back: url(../img/back.svg);
+$close: url(../img/close.svg);
+$east: url(../img/east.svg);
+$west: url(../img/west.svg);
+$tabs: 5;
+$c-width: 100vw;
+$c-height: 100vh;
+$marker-width: 60px;
+$label-padding: 15px;
+$title-font-size: 14px;
+$content-margin: 50px;
+$indent: 0px; //6px;
+$marker-height: 100%; //$c-height/$tabs;
+$marker-radius: 0px; // 0 $marker-height/10 $marker-height/10 0;
+$box-shadow: none; //3px 0px 6px -3px $bg;
+$tab-color: #E57373 #81C784 #64B5F6 #9575CD #a19ea5;
+$easing: cubic-bezier(.10, .65, .05, 1);
+$slide-time: 1.2s;
+$content-time: $slide-time/3;
+@mixin transition ($prop, $time) {
+    -webit-transition: $prop $time $easing;
+    transition: $prop $time $easing;
+}
+
+body {
+    overflow: hidden;
+    &.post,
+    &.page {
+        margin: 0;
+    }
+}
+
+// LOADER
+#page .loader-wrapper {
+    opacity: 0;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    position: fixed;
+    pointer-events: none;
+    background-color: rgba(255, 255, 255, 1);
+    z-index: 10;
+    transition: opacity 0.5s $easing;
+    &.active {
+        opacity: 1;
+    }
+    .loader {
+        // @extend .lds-hourglass;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        // filter: drop-shadow(2px 4px 6px black) invert(1);
+        // content: url(https://www.pepite.world/wp-content/uploads/2020/11/preloader-2.gif);
+        font-size: 5rem;
+        text-align: center;
+        &:after {
+            content: 'Pépite';
+        }
+    }
+}
+
+// Tabbed layout
+.pepite-tab-container {
+    display: flex;
+    flex-direction: column;
+    width: $c-width;
+    height: $c-height;
+    &>label {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: $c-width;
+        height: $marker-width;
+        padding: $label-padding;
+        box-shadow: $box-shadow;
+        overflow: hidden;
+        // margin: 0;
+        // margin-bottom: -10px;
+        @include transition(height, $slide-time);
+    }
+    .tab-title {
+        line-height: 2;
+        margin: 0;
+    }
+    .content {
+        font-size: $title-font-size;
+        overflow-y: auto;
+        margin: 0 25px;
+    }
+    input[type=radio] {
+        display: none;
+        &+label .content {
+            //display: none;
+        }
+        &:checked+label {
+            height: calc( #{$c-height} - #{ ($tabs - 1) * $marker-width});
+            // Control item content display
+            & .content {
+                //display: block;
+            }
+        }
+    }
+}
+
+// Tabbed layout 800px
+@media screen and (min-width: 50rem) {
+    .pepite-tab-container {
+        flex-direction: row;
+        //padding-left: $marker-width;
+        input[type=radio]:first-of-type+label .tab-title {
+            text-orientation: upright;
+            letter-spacing: -0.25rem;
+            text-transform: uppercase;
+        }
+        input[type=radio]:not(:first-of-type)+label {
+            .tab-title {
+                transform: rotate(180deg);
+            }
+        }
+        &>label {
+            position: relative;
+            padding: 0;
+            // right: #{$marker-width * -1};
+            height: $c-height !important;
+            width: $marker-width;
+            align-items: center;
+            // overflow: visible;
+            @include transition(width, $slide-time);
+            // emplacement pour le label
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                height: 100vh;
+                width: $marker-width;
+                // left: #{$marker-width * -1};
+                background-color: inherit;
+                left: 0;
+            }
+        }
+        .tab-title {
+            position: absolute;
+            z-index: 1;
+            line-height: $marker-width;
+            margin-top: 1.5rem;
+            writing-mode: vertical-rl;
+            text-orientation: sideways;
+            position: absolute;
+            left: 0;
+        }
+        .content {
+            margin-left: $marker-width;
+            padding: 2rem;
+            width: calc( #{$c-width} - #{$tabs * $marker-width});
+            height: 100%;
+            @include transition(width, $slide-time);
+        }
+        input[type=radio] {
+            &:checked+label {
+                width: calc( #{$c-width} - #{($tabs - 1) * $marker-width});
+                height: $c-height;
+                align-items: flex-start;
+            }
+            // &:checked+label#post-direction-artistique:after,
+            // &:checked+label#post-editions:after {
+            //     border-right: 1px solid #333333 !important;
+            // }
+        }
+    }
+}
+
+// projet  layout
+$nav-width: 12rem;
+.pepite-tab-container {
+    article {
+        position: relative;
+    }
+    nav.secondary {
+        width: $nav-width;
+        background-color: white;
+        position: absolute;
+        z-index: 1;
+    }
+    .entry-content {
+        flex: 1;
+    }
+}
+
+#post-direction-artistique {
+    #projet-nav {
+        top: 4rem;
+    }
+    .content>.content-wrapper {
+        position: relative;
+    }
+    .entry-content {
+        position: relative;
+        max-width: 100%;
+        height: 95%;
+        padding: 0 2rem;
+    }
+    .draggable {
+        position: absolute;
+        width: auto;
+        height: 200px;
+        cursor: move;
+        z-index: 100;
+    }
+    .draggable.dragging {
+        z-index: 110;
+    }
+}
+
+// Edition layout
+.editions-set {
+    display: flex;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    flex-flow: wrap;
+}
+
+.edition-item {
+    width: 250px;
+    min-width: 250px;
+    margin: 80px 0 auto;
+    padding: 0 10px;
+    text-align: center;
+    border-bottom: 0.5px solid #000;
+    a {
+        width: 100%;
+        display: block;
+        height: 270px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        &>span {
+            visibility: hidden;
+        }
+    }
+}
+
+// nav
+.is-current-item {
+    a {
+        font-style: italic;
+        font-family: 'pipelight_italic';
+    }
+}
+
+a:focus,
+button:focus,
+button:hover {
+    outline: none;
+    border-color: unset;
+}
+
+a:focus {
+    border: none;
+}
+
+.close-cursor {
+    cursor: $close, auto;
+}
+
+// Glide
+.glide {
+    height: calc(100% - 5rem);
+}
+
+.glide__track {
+    height: 100%;
+}
+
+#post-projet ul.glide__slides .glide__slide {
+    padding-left: calc(#{$nav-width} + 2rem);
+}
+
+ul.glide__slides {
+    margin: 0;
+    .glide__slide {
+        text-align: center;
+        padding: 2rem;
+    }
+    .glide__slide>* {
+        -webkit-box-sizing: inherit;
+        box-sizing: inherit;
+        height: auto;
+        width: auto;
+        max-height: 50%;
+    }
+}
+
+.glide__arrows {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glide__arrow {
+    position: absolute;
+    transform: none;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    cursor: $west, w-resize;
+    opacity: 0;
+    box-shadow: none !important;
+}
+
+.glide__arrow.glide__arrow--right {
+    cursor: $east, e-resize;
+    left: 50%;
+}
+
+// icone frimousse
+.frimousse {
+    font-size: 20px;
+    line-height: 1.5;
+    width: $nav-width;
+}
+
+// infobar
+.infobar {
+    display: flex;
+    padding: 0 2rem;
+    a,
+    a:hover,
+    a:active,
+    a:focus {
+        text-decoration: none;
+    }
+    button[data-modal-open] {
+        padding: .5rem 1rem;
+    }
+    button.back {
+        margin-left: auto;
+    }
+}
+
+// hide infobar 
+.infobar.no-nav {
+    display: none;
+}
+
+button.back {
+    background-image: $back;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+}
+
+#projet-nav+.entry-content .infobar {
+    margin-top: -1rem;
+    margin-bottom: 5rem;
+}
+
+[data-slide-current]:before {
+    content: attr(data-slide-current);
+}
+
+[data-slide-total]:before {
+    content: attr(data-slide-total);
+}
+
+.diamond {
+    position: relative;
+    display: block;
+    margin-left: 3.25rem;
+    margin-right: 1.25rem;
+    padding: .5rem 0;
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    &:before,
+    &:after {
+        top: 0.3rem;
+        width: 1.7rem;
+        height: 1.7rem;
+        content: '';
+        position: absolute;
+        border: 1px solid #333333;
+        transform: translateX(-50%) rotate(45deg)
+    }
+    &:before {
+        border-top: none;
+        border-right: none;
+    }
+    &:after {
+        border-bottom: none;
+        border-left: none;
+    }
+}
+
+
+/** TODO - Responsive visibilit rules **/
+
+
+/** Hover **/
+
+*[id |="a-rel"] {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 102%; // italic font is larger   
+    text-align: center;
+    background: white;
+    letter-spacing: .75rem;
+}
+
+a[rel] {
+    position: relative;
+}
+
+
+/** Square boxed letter **/
+
+.square {
+    position: relative;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 26px;
+    top: -0.25rem;
+    &:before {
+        content: '';
+        position: absolute;
+        left: -0.8rem;
+        bottom: 0;
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid $color__border-square;
+    }
+}
+
+// Content Lightbox 
+// handle click on tab title to show lightbox
+// .pepite-tab-container input[type=radio]:not(:first-of-type) + label .tab-title:hover {
+//     & ~ .active-ajax-container {
+//         .lightbox, .lightbox-overlay {
+//             opacity: 1;
+//         }
+//         .lightbox {
+//             pointer-events: initial;
+//             z-index: 21;
+//         }
+//     }
+// }
+// layout
+// .pepite-tab-container article {
+//     .lightbox, .lightbox-overlay {
+//         position: fixed;
+//         top: 0;
+//         left: 0;
+//         width: 100vw;
+//         height: 100vh;
+//         z-index: 20;
+//         pointer-events: none;
+//         opacity: 0;
+//         transition: opacity .75s ease-in-out;
+//     }
+//     .lightbox {
+//         margin: 2rem ;
+//         background-color: white;
+//         padding: 2rem;
+//         height: calc(100% - 4rem);
+//         width: calc(100% - 4rem);
+//     }
+//     .lightbox-overlay {
+//         background: grey;
+//     }
+// }
