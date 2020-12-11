@@ -17,8 +17,8 @@ function pepite_world_get_projets() {
 if( !function_exists('pepite_world_projets_content')){
 function pepite_world_archive_projet() {
     
-    $content = pepite_world_infobar('projet');
-    $content .= pepite_world_nav_projet();
+    //$content = pepite_world_infobar('projet');
+    $content = pepite_world_nav_projet();
     
     $projets = pepite_world_get_projets();
     foreach( $projets as $projet ) {

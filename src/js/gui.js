@@ -1,11 +1,4 @@
 /**
- * Drag
- */
-// jQuery(function($) {
-//     $(".draggable").draggable();
-// });
-
-/**
  * Modal
  */
 import MicroModal from 'micromodal';
@@ -13,7 +6,7 @@ window.initMicroModal = function() {
     MicroModal.init({
         onClose: modal => modal.previousElementSibling.style['pointer-events'] = 'inherit',
         openTrigger: 'data-modal-open',
-        closeTrigger: 'data-modal-close',
+        //closeTrigger: 'data-modal-close',
         openClass: 'is-open',
         disableScroll: false,
         disableFocus: false,
@@ -47,53 +40,40 @@ window.randomizeDrag = function($) {
 }
 
 // Font loader
-window.loaderFonts = [
-    'MocheRegular',
-    'PipeLight',
-    'BendicionRegular'
-]
-window.loaderLoadedFont = 1;
-window.LoaderInterval;
+// window.loaderFonts = [
+//     'MocheRegular',
+//     'PipeLight',
+//     'BendicionRegular'
+// ]
+// window.loaderLoadedFont = 1;
+// window.LoaderInterval;
 
-
-// $(document).on('classChanged', '.loader-wrapper .loader', () => {
-//     console.log('ok')
-//     if (window.LoaderInterval) {
-//         window.LoaderInterval = setInterval(() => {
-//             window.loaderLoadedFont = window.loaderLoadedFont == window.loaderFonts.length ? 0 : window.loaderLoadedFont + 1
-//             console.log(window.loaderFonts.length, window.loaderLoadedFont)
-//             $('.loader-wrapper .loader').css('font-family', window.loaderFonts[window.loaderLoadedFont]);
-//         }, 100);
-//     } else {
-//         clearInterval(window.LoaderInterval);
-//     }
-// })
 
 jQuery(document).ready(function($) {
 
     // observe loader class mutation
-    var $el = $(".loader-wrapper");
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.attributeName === "class") {
-                var attributeValue = $(mutation.target).prop(mutation.attributeName).split(' ');
-                console.log("Class attribute changed to:", attributeValue);
-                if (attributeValue.indexOf('active') !== -1) {
-                    console.log("in");
-                    window.LoaderInterval = setInterval(() => {
-                        window.loaderLoadedFont = window.loaderLoadedFont == window.loaderFonts.length ? 0 : window.loaderLoadedFont + 1
-                        console.log(window.loaderFonts.length, window.loaderLoadedFont)
-                        $('.loader-wrapper .loader').css('font-family', window.loaderFonts[window.loaderLoadedFont]);
-                    }, 100);
-                } else {
-                    clearInterval(window.LoaderInterval);
-                }
-            }
-        });
-    });
-    observer.observe($el[0], {
-        attributes: true
-    });
+    // var $el = $(".loader-wrapper");
+    // var observer = new MutationObserver(function(mutations) {
+    //     mutations.forEach(function(mutation) {
+    //         if (mutation.attributeName === "class") {
+    //             var attributeValue = $(mutation.target).prop(mutation.attributeName).split(' ');
+    //             console.log("Class attribute changed to:", attributeValue);
+    //             if (attributeValue.indexOf('active') !== -1) {
+    //                 console.log("in");
+    //                 window.LoaderInterval = setInterval(() => {
+    //                     window.loaderLoadedFont = window.loaderLoadedFont == window.loaderFonts.length ? 0 : window.loaderLoadedFont + 1
+    //                     console.log(window.loaderFonts.length, window.loaderLoadedFont)
+    //                     $('.loader-wrapper .loader').css('font-family', window.loaderFonts[window.loaderLoadedFont]);
+    //                 }, 100);
+    //             } else {
+    //                 clearInterval(window.LoaderInterval);
+    //             }
+    //         }
+    //     });
+    // });
+    // observer.observe($el[0], {
+    //     attributes: true
+    // });
 
     let padding = 32;
     let menuWidth = $(".draggable").width() / 2 + $('.pepite-tab-container nav.secondary').width() + parseInt($('#post-projet .content').css('padding-left').replace(/\D/g, ''), 10) + parseInt($('#post-projet .content').css('margin-left').replace(/\D/g, ''), 10);
@@ -106,19 +86,22 @@ jQuery(document).ready(function($) {
     $(".draggable").draggable({ containment: constraint, scroll: false });
     window.randomizeDrag($);
 
-    $(document).on('click', '[data-modal-open]', function() {
-        var modalId = $(this).data('modal-open');
-        MicroModal.show(modalId);
-        $('body .glide').css('pointer-events', 'none');
-        $('body .entry-content').addClass('close-cursor')
-            .on('click', function() {
-                MicroModal.close(modalId);
-                $('body .entry-content').toggleClass('close-cursor')
-                $('body .glide').css('pointer-events', 'unset');
-            });
-    })
-    $(document).on('click', '[data-modal-close]', function() {
-        MicroModal.close($(this).data('modal-close'));
+    // $(document).on('click', '[data-modal-open], [data-micromodal-trigger]', function() {
+    //     var modalId = $(this).data('modal-open') ? $(this).data('modal-open') : $(this).data('micromodal-trigger');
+    //     console.log(modalId);
+    //     MicroModal.show(modalId);
+    //     $('body .glide').css('pointer-events', 'none');
+    //     $('body .entry-content').addClass('close-cursor')
+    //         .on('click', function() {
+    //             MicroModal.close(modalId);
+    //             $('body .entry-content').toggleClass('close-cursor')
+    //             $('body .glide').css('pointer-events', 'unset');
+    //         });
+    // })
+    $(document).on('click', '[data-modal-close], [data-micromodal-close]', function() {
+        // var modalId = $(this).data('modal-close') ? $(this).data('modal-close') : $(this).data('micromodal-close');
+        var modalId = $(this).prev('.modal').attr('id');
+        MicroModal.close(modalId);
     })
 
 });

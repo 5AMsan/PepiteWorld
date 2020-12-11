@@ -251,6 +251,13 @@ function pepite_world_infobar($post_format='default', $content=null){
 }
 }
 
+function  pepite_world_favicon($url, $size, $blog_id){
+	$files = preg_grep('~^fav_[1-9]+\.png$~', scandir( get_stylesheet_directory()."/dist/favicons/"));
+	$fav = $files[ rand(2, count($files) + 1) ];
+	$url = get_stylesheet_directory_uri() ."/dist/favicons/$fav";
+	return $url;
+}
+add_filter('get_site_icon_url', 'pepite_world_favicon', 10, 3);
 
 /**
  * Navigations

@@ -83,15 +83,20 @@ body {
         // margin: 0;
         // margin-bottom: -10px;
         @include transition(height, $slide-time);
+        &::after {
+            z-index: 2;
+        }
     }
     .tab-title {
         line-height: 2;
         margin: 0;
+        z-index: 3;
     }
     .content {
         font-size: $title-font-size;
         overflow-y: auto;
         margin: 0 25px;
+        z-index: 1;
     }
     input[type=radio] {
         display: none;
@@ -146,7 +151,7 @@ body {
         }
         .tab-title {
             position: absolute;
-            z-index: 1;
+            //z-index: 1;
             line-height: $marker-width;
             margin-top: 1.5rem;
             writing-mode: vertical-rl;

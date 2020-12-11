@@ -10,7 +10,8 @@
     opacity: 0;
     position: absolute;
     width: 50%;
-    // height: 50vh;
+    max-height: 80vh;
+    overflow-y: auto;
     top: 50%;
     left: calc(50% + 6rem);
     transform: translate( -50%, -50%);
@@ -22,6 +23,11 @@
     header {
         border-bottom: 1px solid #333;
     }
+}
+
+#modal-3,
+#modal-politique-de-confidentialite {
+    font-size: 55%;
 }
 
 .modal.is-open+#modal-overlay {

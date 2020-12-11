@@ -53,6 +53,11 @@ function pepite_main_pages_set() {
                                 $submenu_post = 'risographie';
                                 $content = apply_filters( 'the_content', get_the_content(null, false, $tab) );
                                 break;
+                        case 2:
+                                global $submenu_post;
+                                $submenu_post = 
+                                $content = apply_filters( 'the_content', get_the_content(null, false, $tab) ) . pepite_world_privacy_modal();
+                                break;
                         default:
                                 global $submenu_post;
                                 $submenu_post = 
@@ -186,4 +191,10 @@ function pepite_set_tab_color() {
 add_action('get_header', 'pepite_filter_head');
 function pepite_filter_head() {
         remove_action('wp_head', '_admin_bar_bump_cb');
+}
+
+
+/** LOAD content in model for HOME */
+function pepite_world_privacy_modal() {
+        return pepite_world_modal( get_option( 'wp_page_for_privacy_policy', 0 ) );
 }

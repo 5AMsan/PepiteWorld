@@ -33,24 +33,25 @@ jQuery(function($) {
     // Fontsampler
     if ($('.fontsampler-wrapper').length) initFontsampler();
 
-    // Add Loader markup
-    // var loader = $('.pepite-tab-container').append(function(){ return '<div class="loader-wrapper"><div class="loader"></div></div>'});
-    // var loader = $('<div class="loader-wrapper"><div class="loader"></div></div>').appendTo($('#page'))
-    var loader = $('.loader-wrapper')
+    // var loader = $('.loader-wrapper')
 
     // Handle double click on draggable
     $("body").on('dblclick', '.draggable', function(e) {
         return $(`#item-${$(this).data('id')} a`).trigger('click');;
     });
 
-    // Capture click on labels, links are tracked from within labels
-    $('body').on('click', '#page > .pepite-tab-container a', (e) => {
+    // Capture click on labels, links are tracked from within labels 
+    $('body').on('click', '#page > .pepite-tab-container a:not([target]):not([href^=mailto])', (e) => {
 
         // stop link click and label animation (checkbox won't be checked)
         e.preventDefault();
 
-        // var tagname = $(e.target).prop("tagName").toLowerCase();
-        var url = new URL($(e.target).data('link') || e.target.href);
+        try {
+            var url = new URL($(e.target).data('link') || e.target.href);
+        } catch (e) {
+            return;
+        }
+
         var link = url.pathname;
         var targetContainer = $(e.target).attr('rel');
         var checkbox = $(`#item-${targetContainer}`);
@@ -78,13 +79,13 @@ jQuery(function($) {
         }
 
         // Manage page load
-        loader.addClass('active').trigger('classChanged');
+        //loader.addClass('active').trigger('classChanged');
         $.ajax({ url: link })
             .success(response => {
                 $(`#${targetContainer}`).data('loaded', link)
                     .html(response.content)
                     .fadeIn('fast');
-                loader.removeClass('active').trigger('classChanged');
+                //loader.removeClass('active').trigger('classChanged');
                 // Content is loaded, run label animation
                 checkbox.prop('checked', true);
 
@@ -98,11 +99,14 @@ jQuery(function($) {
                     case 'edition':
                         var init = location.pathname == '/edition/' ? true : [window.initMicroModal(), initGlide(), initInfobar()];
                         break;
+                    case 'home':
+                        var init = [window.initMicroModal()];
+                        break;
                 }
 
             })
             .done(function() {
-                loader.removeClass('active').trigger('classChanged');
+                //loader.removeClass('active').trigger('classChanged');
             });
 
         return true;
