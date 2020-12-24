@@ -29,10 +29,11 @@ function pepite_world_archive_font() {
 
 		$format = '<div class="fontsampler-nav-item" data-fontsampler="%1$s" data-link="%6$s">
 		<a href="%6$s" rel="font">Détails <div class="font-title font-%1$s">%2$s</div> <div class="font-author">%3$s <3 %4$s</div> <div class="font-variants">%5$s</div></a></div>';
+		
 		foreach($sets as $set) {
 			$font_id = get_field('font_main', $set->ID);
 			$author_id = get_field('font_author', $set->ID);
-			$shortcode = do_shortcode("[fontsampler id=$font_id]");
+			$shortcode = do_shortcode("[fontsampler id=$font_id text=\"{$set->post_title}\"]");
 			$name = null;
 			$fname = null;
 			$author = get_userdata($author_id);
@@ -63,10 +64,11 @@ function pepite_world_font() {
 	global $post;
 	$font_id = get_field('font_main', $post->ID);
 	remove_filter('the_content', 'pepite_world_font_content_filter');
-	$content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id]") . apply_filters( 'the_content', get_the_content($post) );
+	$content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id text=\"{$post->post_title}\"]") . apply_filters( 'the_content', get_the_content($post) );
 	add_filter('the_content', 'pepite_world_font_content_filter');
 	return $content;
 }
+
 function pepite_world_font_content_filter($content) {
 	if ( !pepite_is_ajax_request() || !is_singular('font') ) return $content;
 	$content = pepite_world_font() . $content;
@@ -74,21 +76,21 @@ function pepite_world_font_content_filter($content) {
 }
 add_filter('the_content', 'pepite_world_font_content_filter');
 
-function pepite_world_acf_load_author_fonts_field_choices( $field ) {
+function pepite_world_acf_load_fonts_field_choices( $field ) {
     // reset choices
     $field['choices'] = array();
 	$choices = pepite_world_get_fontsampler_headers(false);
     if( is_array($choices) ) {
         foreach( $choices as $choice ) {
-            $field['choices'][ $choice['set_id'] ] = $choice['initial'];
+            $field['choices'][ $choice['id'] ] = $choice['initial']?:$choice['id'];
         }
         
     }
     // return the field
     return $field;
 }
-add_filter('acf/load_field/name=author_fonts', 'pepite_world_acf_load_author_fonts_field_choices');
-add_filter('acf/load_field/name=font_main', 'pepite_world_acf_load_author_fonts_field_choices');
+// add_filter('acf/load_field/name=author_fonts', 'pepite_world_acf_load_fonts_field_choices');
+add_filter('acf/load_field/name=font_main', 'pepite_world_acf_load_fonts_field_choices');
 
 function pepite_world_add_eot($mime_types){
 	$mime_types['eot'] = 'application/vnd.ms-fontobject';
@@ -102,8 +104,9 @@ function pepite_world_get_fontsampler_set_variant($set_id) {
 	$variants = $wpdb->get_var	( $sql );
 	return $variants;
 }
-function pepite_world_get_fontsampler_sets($echo=true) {
-	global $wpdb;
+
+function ZZ__pepite_world_get_fontsampler_sets($echo=true) {
+	global $wpdb, $post;
 	$sql = 'SELECT ID FROM ' . $wpdb->prefix . 'fontsampler_sets';
 	$sets = $wpdb->get_results( $sql, ARRAY_A );
 	if ($sets) {
@@ -117,14 +120,18 @@ function pepite_world_get_fontsampler_sets($echo=true) {
 	}
 	return false;
 }
+
 function pepite_world_get_fontsampler_headers($echo=true) {
 	global $wpdb;
-	$sql = 'SELECT initial, set_id FROM ' . $wpdb->prefix . 'fontsampler_settings WHERE set_id IS NOT NULL;';
+	$sql = "SELECT {$wpdb->prefix}fontsampler_sets.id, {$wpdb->prefix}fontsampler_settings.initial 
+	FROM {$wpdb->prefix}fontsampler_sets
+	LEFT JOIN {$wpdb->prefix}fontsampler_settings ON id = set_id";
+	// $sql = 'SELECT initial, set_id FROM ' . $wpdb->prefix . 'fontsampler_settings WHERE set_id IS NOT NULL;';
 	$sets = $wpdb->get_results( $sql, ARRAY_A );
 	if ($sets) {
 		if ($echo) {
 			foreach($sets as $set) {
-				echo do_shortcode("[fontsampler id={$set['set_id']}]");
+				echo do_shortcode("[fontsampler id={$set['id']}]");
 			}
 		} else {
 			return $sets;
@@ -132,7 +139,8 @@ function pepite_world_get_fontsampler_headers($echo=true) {
 	}
 	return false;
 }
-function pepite_world_get_font_author($set_id) {
+
+function ZZ_pepite_world_get_font_author($set_id) {
 	$args = array(
 		'meta_query' => array(
 			array(
@@ -151,15 +159,17 @@ function pepite_world_get_font_author($set_id) {
 	}
 	return false;
 }
+
 function pepite_world_fontsampler_enqueue() {
 	wp_enqueue_style('fontsampler-css', plugins_url().'/fontsampler/css/fontsampler-css.css');
 	wp_enqueue_script('fontsampler-js', plugins_url().'/fontsampler/js/fontsampler.js', array('jquery'), false, false);
 }
 add_action('wp_enqueue_scripts', 'pepite_world_fontsampler_enqueue');
 
-function pepite_world_get_post_gallery($post=false) {
+function ZZ_pepite_world_get_post_gallery($post=false) {
 	return;
 }
+
 /** END FontSampler */
 
 // CPT

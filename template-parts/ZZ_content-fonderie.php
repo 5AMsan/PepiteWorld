@@ -11,7 +11,7 @@
 <div  id="post-<?php the_ID(); ?>" <?php post_class('projet'); ?>>
 
 <?php
-    pepite_world_get_fontsampler_sets();
+    // pepite_world_get_fontsampler_sets();
 ?>
 	
 </div><!-- .entry-content -->

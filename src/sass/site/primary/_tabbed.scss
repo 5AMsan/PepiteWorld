@@ -247,8 +247,40 @@ $nav-width: 12rem;
         background-repeat: no-repeat;
         background-position: center bottom;
         &>span {
-            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+            opacity: 0;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            padding: 1rem;
+            transition: all 1s ease-in-out;
         }
+        &:hover>span {
+            color: #333333;
+            opacity: 1;
+            transform: translateY(100%);
+        }
+    }
+}
+
+// risographie
+#risographie {
+    padding-top: 6rem;
+    .infobar {
+        position: fixed;
+        top: 0;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        width: 100%;
+        background: white;
+    }
+    .interieur-risographie a[href*=mailto] img {
+        vertical-align: sub;
+        margin-right: 1rem;
+    }
+    .diamond {
+        margin-left: 65px;
     }
 }
 
@@ -396,6 +428,7 @@ button.back {
     padding: .5rem 0;
     border-top: 1px solid #333333;
     border-bottom: 1px solid #333333;
+    width: fit-content;
     &:before,
     &:after {
         top: 0.3rem;

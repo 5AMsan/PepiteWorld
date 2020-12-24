@@ -106,10 +106,13 @@ jQuery(document).ready(function($) {
 
 });
 
-/** CSS specials  */
-// allow click on font title on `fonderie`
+/** FontSampler  */
 jQuery(document).ready(function($) {
-    $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
+    // $("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function(event) {
+    //     $(this).css('border', '5px solid red')
+    // });
+    // allow click on font title on `fonderie`
+    if ($('.fontsampler-wrapper').length > 1) $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
 });
 
 /** Populate Home FX */

@@ -24,8 +24,8 @@ function pepite_world_archive_edition() {
     foreach( $editions as $edition ) {
         $image = get_the_post_thumbnail_url($edition->ID) ?: DEFAULT_IMAGE;
         $link = get_the_permalink($edition->ID);
-        $format = '<div class="edition-item"><a style="background-image: url(%s);" href="%s"  data-edition="%s" rel="edition"><span>Voir l\'édition</span></a></div>';
-        $content .= sprintf ($format, $image, $link, $edition->ID );
+        $format = '<div class="edition-item"><a style="background-image: url(%s);" href="%s"  data-edition="%s" rel="edition"><span>%s</span></a></div>';
+        $content .= sprintf ($format, $image, $link, $edition->ID, $edition->post_title );
     }
     wp_reset_postdata();
     

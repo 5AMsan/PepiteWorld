@@ -75,14 +75,14 @@ add_filter('the_content', 'pepite_world_risographie_content_filter');
 
 if( !function_exists('pepite_world_infobar')){
 function pepite_world_infobar($post_format='default', $content=null){
-		global $post; //, $pepite_world_internal_nav_items;
+		global $post, $submenu_post; //, $pepite_world_internal_nav_items;
 
 		$format = [
 			'default'   	=> '<div class="infobar no-nav"></div>',
 			'risographie'   => '<div class="infobar"> %s <button class="contact">Contact</button> </div>',
 			'font'  		=> '<div class="infobar"> <button class="support-us">Support us</button> <button class="download">Download</button> <button class="specimen">Spécimen</button> <button class="back" data-url="/fonderie/"></button> </div>',
-			'projet'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="10"></span></div> <button class="back" data-url="/direction-artistique/"></button> </div>',
-			'edition'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="10"></span></div>  <a class="button shopify" href="%2$s" target="_blank">Ajouter à mon panier</a> <button class="back" data-url="/editions/"></button> </div>',
+			'projet'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div> <button class="back" data-url="/direction-artistique/"></button> </div>',
+			'edition'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div>  <a class="button shopify" href="%2$s" target="_blank">Ajouter à mon panier</a> <button class="back" data-url="/editions/"></button> </div>',
 		];
 		// is archive ?
 		if (is_archive()) {
@@ -92,6 +92,7 @@ function pepite_world_infobar($post_format='default', $content=null){
 			$infobar = sprintf( $format[$post_format], $post_format );
 		}
 		elseif ( $post_format=='risographie' && array_key_exists($post_format, $format) ) {
+			$submenu_post = 
 			$infobar = sprintf( $format[$post_format], $content);
 		}
 		elseif ( $post && array_key_exists($post_format, $format) && $post_format=='edition' ) {

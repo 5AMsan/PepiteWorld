@@ -31,6 +31,7 @@ if( !empty($block['align']) ) {
 $items = array();
 if (have_rows('galerie')) {
     ?>
+    <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div>
     <div class="glide">
         <div data-glide-el="track" class="glide__track">
             <ul class="glide__slides">
