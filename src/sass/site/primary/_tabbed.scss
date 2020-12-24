@@ -274,6 +274,7 @@ $nav-width: 12rem;
         padding-bottom: 2rem;
         width: 100%;
         background: white;
+        z-index: 1;
     }
     .interieur-risographie a[href*=mailto] img {
         vertical-align: sub;

@@ -102,7 +102,18 @@ jQuery(document).ready(function($) {
         // var modalId = $(this).data('modal-close') ? $(this).data('modal-close') : $(this).data('micromodal-close');
         var modalId = $(this).prev('.modal').attr('id');
         MicroModal.close(modalId);
-    })
+    });
+
+    // Risograpghie scroll watch
+    $(window).scroll(function() {
+        var winTop = $(this).scrollTop();
+        var $targets = $('#risographie .content h2[id]');
+        $.each($targets, function(item) {
+            if ($(item).position().top <= winTop)
+                var name = $(this).attr('id');
+            $(`.infobar a.secondary[href=#${name}]`).css('font-family', 'pipemedium')
+        });
+    });
 
 });
 
