@@ -1,0 +1,144 @@
+{
+    "key": "group_5eec73406399c",
+    "title": "Font",
+    "fields": [
+        {
+            "key": "field_5eec73d765a1d",
+            "label": "Font",
+            "name": "font_main",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "1": "Bendiciòn",
+                "2": "Moche",
+                "3": "Pipe"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5eec736081954",
+            "label": "Auteur",
+            "name": "font_author",
+            "type": "user",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id"
+        },
+        {
+            "key": "field_5eec86edf9456",
+            "label": "Format",
+            "name": "font_format",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "31",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Open Type": "Open Type",
+                "Web font": "Web font",
+                "True Type": "True Type"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 1,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5eec86f9f9457",
+            "label": "Script",
+            "name": "font_script",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "31",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5eec870d62518",
+            "label": "Styles",
+            "name": "font_styles",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "31",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Ultra": "Ultra",
+                "Thin": "Thin",
+                "Light": "Light",
+                "Medium": "Medium",
+                "Regular": "Regular",
+                "Bold": "Bold",
+                "Black": "Black",
+                "Extra": "Extra"
+            },
+            "default_value": [],
+            "allow_null": 0,
+            "multiple": 1,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "font"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1608803725
+}

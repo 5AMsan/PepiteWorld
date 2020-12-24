@@ -94,9 +94,11 @@ body {
     }
     .content {
         font-size: $title-font-size;
-        overflow-y: auto;
         margin: 0 25px;
         z-index: 1;
+    }
+     :not(#post-projet)>.content {
+        overflow-y: auto;
     }
     input[type=radio] {
         display: none;
@@ -274,30 +276,37 @@ a:focus {
 }
 
 // Glide
+.glide-wrapper {
+    height: calc(100vh - 10rem);
+    display: flex;
+    align-items: center;
+}
+
 .glide {
-    height: calc(100% - 5rem);
+    height: 580px;
 }
 
 .glide__track {
-    height: 100%;
-}
-
-#post-projet ul.glide__slides .glide__slide {
-    padding-left: calc(#{$nav-width} + 2rem);
+    height: 580px;
 }
 
 ul.glide__slides {
-    margin: 0;
+    max-height: 580px;
     .glide__slide {
+        height: 580px;
         text-align: center;
-        padding: 2rem;
+        div,
+        img,
+        iframe {
+            max-height: 580px;
+            width: auto;
+        }
     }
     .glide__slide>* {
         -webkit-box-sizing: inherit;
         box-sizing: inherit;
-        height: auto;
-        width: auto;
-        max-height: 50%;
+        // height: auto;
+        // width: auto;
     }
 }
 
@@ -343,7 +352,7 @@ ul.glide__slides {
     a:focus {
         text-decoration: none;
     }
-    button[data-modal-open] {
+    button:not(.back) {
         padding: .5rem 1rem;
     }
     button.back {

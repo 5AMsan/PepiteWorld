@@ -163,16 +163,17 @@ jQuery(function($) {
         return player;
     }
 
-    function initGlide() {
-        let glideCar;
+    function initGlide(post) {
+        // let glideCar;
         let sliders = document.querySelectorAll('.glide');
         for (var i = 0; i < sliders.length; i++) {
             try {
-                glideCar = new Glide(sliders[i], {
-                        type: 'carousel',
-                    })
-                    .on('build.after', function() {
-                        $('[data-slide-total]').attr("data-slide-total", $('.glide__slide:not(.glide__slide--clone)').length - 3);
+                const glideCar = new Glide(sliders[i], {
+                    type: 'carousel',
+                });
+                glideCar.on('build.after', function() {
+                        let context = $(glideCar.selector).parent();
+                        context.parent().find('[data-slide-total]').attr("data-slide-total", context.find('.glide__slide:not(.glide__slide--clone)').length);
                     })
                     .on('run.after', function(e) {
                         $('[data-slide-current]').attr("data-slide-current", glideCar.index + 1);

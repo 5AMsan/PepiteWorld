@@ -219,37 +219,7 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
-if( !function_exists('pepite_world_infobar')){
-function pepite_world_infobar($post_format='default', $content=null){
-		global $post, $pepite_world_internal_nav_items;
 
-		$format = [
-			'default'   	=> '<div class="infobar no-nav"></div>',
-			'risographie'   => '<div class="infobar"> %s <button class="contact">Contact</button> </div>',
-			'font'  		=> '<div class="infobar"> <button class="support-us">Support us</button> <button class="download">Download</button> <button class="specimen">Spécimen</button> <button class="back" data-url="/fonderie/"></button> </div>',
-			'projet'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="10"></span></div> <button class="back" data-url="/direction-artistique/"></button> </div>',
-			'edition'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="10"></span></div> <button class="back" data-url="/editions/"></button> </div>',
-		];
-		// is archive ?
-		if (is_archive()) {
-			$infobar = sprintf( $format['default'] );
-		}
-		elseif ( is_archive($post_format) && array_key_exists($post_format, $format) ) {
-			$infobar = sprintf( $format[$post_format], $post_format );
-		}
-		elseif ( $post_format=='risographie' && array_key_exists($post_format, $format) ) {
-			$infobar = sprintf( $format[$post_format], $content);
-		}
-		elseif ( $post && array_key_exists($post_format, $format) ) {
-			$infobar = sprintf( $format[$post_format], $post->ID);
-		}
-		else {
-			$infobar = sprintf( $format['default']);
-		}		
-	
-		return $infobar;
-}
-}
 
 function  pepite_world_favicon($url, $size, $blog_id){
 	$files = preg_grep('~^fav_[1-9]+\.png$~', scandir( get_stylesheet_directory()."/dist/favicons/"));
@@ -262,39 +232,6 @@ add_filter('get_site_icon_url', 'pepite_world_favicon', 10, 3);
 /**
  * Navigations
  */
-
-function pepite_world_risographie_content_filter($content) {
-	global $submenu_post;
-	if ( !$submenu_post || $submenu_post!=='risographie' ) return $content;
-
-	$dom = new DOMDocument();
-	libxml_use_internal_errors(true);
-	$dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
-	$nodes = $dom->getElementsByTagName('h2');
-	
-	if($nodes->length < 1)
-		return pepite_world_infobar('risographie') . $content;
-
-	$pepite_world_internal_nav_items = [];
-	foreach ( $nodes as $node) {
-		$anchor = $node->textContent;
-		$href = sanitize_title( $anchor );
-		if ( $node->setAttribute('id', $href) && stripos($anchor,'question')===false ) {
-			array_push (
-				$pepite_world_internal_nav_items, 
-				sprintf(
-					'<a class="button secondary %2$s skip-ajax-nav" href="#%2$s" rel="risographie">%1$s</a>',
-					$anchor, 
-					$href
-				)
-			);
-
-		}
-	}
-	$content = $dom->saveHTML();
-	return pepite_world_infobar('risographie', implode("", $pepite_world_internal_nav_items) ) . $content;
-}
-add_filter('the_content', 'pepite_world_risographie_content_filter');
 
 /** Generate anchor nav on posts */
 if( !function_exists('pepite_world_internal_nav')){
@@ -337,8 +274,8 @@ function pepite_world_internal_nav($content){
 }
 //add_filter('the_content', 'pepite_world_internal_nav');
 
-if( !function_exists('pepite_world_nav_edition')){
-function pepite_world_nav_edition($echo=true){
+if( !function_exists('ZZ_pepite_world_nav_edition')){
+function ZZ_pepite_world_nav_edition($echo=true){
 	$query = new WP_Query( array(
 		'post_type'     => 'edition',
 		'numberposts'   => -1,
