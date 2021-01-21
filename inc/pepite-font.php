@@ -66,7 +66,13 @@ function pepite_world_font() {
 	remove_filter('the_content', 'pepite_world_font_content_filter');
 	$content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id text=\"{$post->post_title}\"]") . apply_filters( 'the_content', get_the_content($post) );
 	add_filter('the_content', 'pepite_world_font_content_filter');
-	return $content;
+
+	$lightbox = get_field('texte_download', $post->ID);
+	$dl_button = '<a class="button download" target="_blank" href="'.get_field('lien_de_telechargement', $post->ID).'">Download</a>';
+	$support_button = '<a class="button support-us" target="_blank" href="'.get_field('lien_de_support', $post->ID).'">Support us</a>';
+	$lightbox .= "<footer>$dl_button $support_button</footer>";
+	// add lightbox and return new content
+	return $content . pepite_world_content_lightbox($lightbox);
 }
 
 function pepite_world_font_content_filter($content) {
@@ -212,7 +218,7 @@ function font_post_type() {
         'public' => true,
         'has_archive' => true,
         'show_in_rest' => true, // Important !
-        'supports' => array('title', 'thumbnail', 'editor'), // Ne pas oublier editor
+        'supports' => array('title', 'thumbnail', 'editor', 'custom-fields'), // Ne pas oublier editor
         'menu_position' => 32,
         'menu_icon' => 'dashicons-awards',
         "rewrite" => array( "slug" => "fonderie", "with_front" => true ),

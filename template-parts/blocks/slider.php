@@ -40,7 +40,7 @@ if (have_rows('galerie')) {
                 the_row();
                 $is_video = @get_sub_field('galerie_item_is_video', )[0] == 'Oui' ? true:false;
                 $video = pepite_world_filter_video(get_sub_field('galerie_item_video', false, false)); //get_sub_field('galerie_item_video', false, false); //
-                $image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'large');
+                $image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'full');
                 $item = $is_video ? $video : $image;
                 ?>
                 <li class="glide__slide">

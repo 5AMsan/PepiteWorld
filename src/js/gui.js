@@ -39,15 +39,6 @@ window.randomizeDrag = function($) {
     })
 }
 
-// Font loader
-// window.loaderFonts = [
-//     'MocheRegular',
-//     'PipeLight',
-//     'BendicionRegular'
-// ]
-// window.loaderLoadedFont = 1;
-// window.LoaderInterval;
-
 
 jQuery(document).ready(function($) {
 
@@ -78,26 +69,15 @@ jQuery(document).ready(function($) {
     let padding = 32;
     let menuWidth = $(".draggable").width() / 2 + $('.pepite-tab-container nav.secondary').width() + parseInt($('#post-projet .content').css('padding-left').replace(/\D/g, ''), 10) + parseInt($('#post-projet .content').css('margin-left').replace(/\D/g, ''), 10);
     let constraint = [
-        menuWidth + padding,
+        // menuWidth + padding,
+        padding,
         padding,
         $('#post-projet .content').width() - padding,
         $('#post-projet .content').height() - padding
     ];
-    $(".draggable").draggable({ containment: constraint, scroll: false });
+    $(".draggable").draggable({ containment: constraint, scroll: false, stack: 'img', distance: 0 });
     window.randomizeDrag($);
 
-    // $(document).on('click', '[data-modal-open], [data-micromodal-trigger]', function() {
-    //     var modalId = $(this).data('modal-open') ? $(this).data('modal-open') : $(this).data('micromodal-trigger');
-    //     console.log(modalId);
-    //     MicroModal.show(modalId);
-    //     $('body .glide').css('pointer-events', 'none');
-    //     $('body .entry-content').addClass('close-cursor')
-    //         .on('click', function() {
-    //             MicroModal.close(modalId);
-    //             $('body .entry-content').toggleClass('close-cursor')
-    //             $('body .glide').css('pointer-events', 'unset');
-    //         });
-    // })
     $(document).on('click', '[data-modal-close], [data-micromodal-close]', function() {
         // var modalId = $(this).data('modal-close') ? $(this).data('modal-close') : $(this).data('micromodal-close');
         var modalId = $(this).prev('.modal').attr('id');
@@ -115,23 +95,22 @@ jQuery(document).ready(function($) {
         });
     });
 
-});
-
-/** FontSampler  */
-jQuery(document).ready(function($) {
-    // $("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function(event) {
-    //     $(this).css('border', '5px solid red')
-    // });
+    /** FontSampler  */
     // allow click on font title on `fonderie`
     if ($('.fontsampler-wrapper').length > 1) $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
-});
 
-/** Populate Home FX */
-// jQuery(document).ready(function($) {
-//     $('#home strong').each(i => {
-//         // console.log($(this).text())
-//         // if ( $(this).html().toLowerCase() == "studio") {
-//         //     $(this).append('<div class="studio-fx"><div class="studio-fx__bg"></div></div>')
-//         // }
-//     })
-// });
+    // Activate custom button for fontsampler actions
+    // if ($('.fontsampler-wrapper').length == 1) {
+    //     $('#post-font').on('click', '.infobar .support-us', function(){
+    //         var win = window.open($('.fontsampler-wrapper.initialized .fontsampler-ui-block[data-block=buy] a').attr('href'), '_blank');
+    //         win.focus();
+    //     })
+    //     $('#post-font').on('click', '.infobar .download', function(){
+    //         var win = window.open($('.fontsampler-wrapper.initialized .fontsampler-ui-block[data-block=specimen] a').attr('href'), '_blank');
+    //         win.focus();
+    //     })
+    // } 
+
+
+
+});

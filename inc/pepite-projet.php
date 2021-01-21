@@ -143,7 +143,7 @@ function projet_post_type() {
         'public' => true,
         'has_archive' => true,
         'show_in_rest' => true, // Important !
-        'supports' => array('title', 'thumbnail', 'editor'), // Ne pas oublier editor
+        'supports' => array('title', 'thumbnail', 'editor', 'custom-fields'), // Ne pas oublier editor
         'menu_position' => 31,
         'menu_icon' => 'dashicons-awards',
         'rewrite' => array( 'slug' => 'direction-artistique', "with_front" => true ),

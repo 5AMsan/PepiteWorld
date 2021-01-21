@@ -24,8 +24,8 @@ function pepite_world_archive_edition() {
     foreach( $editions as $edition ) {
         $image = get_the_post_thumbnail_url($edition->ID) ?: DEFAULT_IMAGE;
         $link = get_the_permalink($edition->ID);
-        $format = '<div class="edition-item"><a style="background-image: url(%s);" href="%s"  data-edition="%s" rel="edition"><span>%s</span></a></div>';
-        $content .= sprintf ($format, $image, $link, $edition->ID, $edition->post_title );
+        $format = '<div class="edition-item"><a style="background-image: url(%s);" href="%s"  data-edition="%s" rel="edition"><span><span class="ed-title">%s</span><br><span class="ed-cat">%s</span> <span class="ed-price"> • %s</span></span></a></div>';
+        $content .= sprintf ($format, $image, $link, $edition->ID, $edition->post_title, get_field('categorie', $edition->ID), get_field('prix', $edition->ID) );
     }
     wp_reset_postdata();
     
@@ -64,11 +64,11 @@ add_filter('the_content', 'pepite_world_edition_content_filter');
 function edition_post_type() {
   
     $labels = array(
-        'name'                  => _x( 'Editions', 'Post Type General Name', 'pepite-world' ),
-        'singular_name'         => _x( 'Edition', 'Post Type Singular Name', 'pepite-world' ),
-        'menu_name'             => __( 'Editions', 'pepite-world' ),
-        'name_admin_bar'        => __( 'Editions', 'pepite-world' ),
-        'archives'              => __( 'Editions', 'pepite-world' ),
+        'name'                  => _x( 'Éditions', 'Post Type General Name', 'pepite-world' ),
+        'singular_name'         => _x( 'Édition', 'Post Type Singular Name', 'pepite-world' ),
+        'menu_name'             => __( 'Éditions', 'pepite-world' ),
+        'name_admin_bar'        => __( 'Éditions', 'pepite-world' ),
+        'archives'              => __( 'Éditions', 'pepite-world' ),
         'attributes'            => __( 'Item Attributes', 'pepite-world' ),
         'parent_item_colon'     => __( 'Parent Item:', 'pepite-world' ),
         'all_items'             => __( 'All Items', 'pepite-world' ),
@@ -100,7 +100,7 @@ function edition_post_type() {
         'public' => true,
         'has_archive' => true,
         'show_in_rest' => true, // Important !
-        'supports' => array('title', 'thumbnail', 'editor'), // Ne pas oublier editor
+        'supports' => array('title', 'thumbnail', 'editor', 'custom-fields'), // Ne pas oublier editor
         'menu_position' => 33,
         'menu_icon' => 'dashicons-awards',
         "rewrite" => array( "slug" => "editions", "with_front" => true ),

@@ -18,7 +18,8 @@
             "choices": {
                 "1": "Bendiciòn",
                 "2": "Moche",
-                "3": "Pipe"
+                "3": "Pipe",
+                "4": "Signes"
             },
             "default_value": [],
             "allow_null": 0,
@@ -121,6 +122,73 @@
             "return_format": "value",
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_5ff5d575cd8ac",
+            "label": "Texte pour le téléchargement",
+            "name": "texte_download",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Nous concevons des polices libres \/ open source. Cela signifie que vous pouvez les utiliser, les modifier et les redistribuer librement en créditant l'auteur. Vous pouvez soutenir notre activité, et notre engagement en faisant un don. Ainsi, nous pourrons continuer à concevoir et à publier de nouvelles polices régulièrement.",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_5ff5d5a4d2205",
+            "label": "Lien de téléchargement",
+            "name": "lien_de_telechargement",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5ff5d5b4d2206",
+            "label": "Lien de support",
+            "name": "lien_de_support",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5ff5da224f1e3",
+            "label": "Lien de specimen",
+            "name": "lien_de_specimen",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -140,5 +208,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1608803725
+    "modified": 1609948001
 }

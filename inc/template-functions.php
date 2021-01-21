@@ -39,6 +39,24 @@ function pepite_world_pingback_header()
 }
 add_action('wp_head', 'pepite_world_pingback_header');
 
+function pepite_logo_font() {
+	$directory = get_stylesheet_directory() ."/dist/fonts";
+	$filecount = 0;
+	$files = glob("$directory/Pepite-Logo?.otf");
+	if ($files){
+		$filecount = count($files);
+	}
+	$num = rand(1, $filecount);
+	?>
+	<style type="text/css" media="screen">
+		/* Logo Font */
+		#post-home .tab-title {
+        	font-family: 'pepite-logo-<?php echo $num ?>';
+    	}
+    </style>
+	<?php
+}
+add_action('wp_head', 'pepite_logo_font');
 
 function pepite_world_risographie_content_filter($content) {
 	global $submenu_post;
@@ -69,7 +87,7 @@ function pepite_world_risographie_content_filter($content) {
 		}
 	}
 	$content = $dom->saveHTML();
-	return pepite_world_infobar('risographie', implode("", $pepite_world_internal_nav_items) ) . $content;
+	return pepite_world_infobar('risographie', implode("<span>→</span>", $pepite_world_internal_nav_items) ) . $content;
 }
 add_filter('the_content', 'pepite_world_risographie_content_filter');
 
@@ -79,10 +97,10 @@ function pepite_world_infobar($post_format='default', $content=null){
 
 		$format = [
 			'default'   	=> '<div class="infobar no-nav"></div>',
-			'risographie'   => '<div class="infobar"> %s <button class="contact">Contact</button> </div>',
-			'font'  		=> '<div class="infobar"> <button class="support-us">Support us</button> <button class="download">Download</button> <button class="specimen">Spécimen</button> <button class="back" data-url="/fonderie/"></button> </div>',
+			'risographie'   => '<div class="infobar"> %s <a href="mailto:message@pepite.world?subject=Contact Pepite World" class="button contact" rel="mailto">Contact</a> </div>',
+			'font'  		=> '<div class="infobar"> <a class="button support-us" href="%3$s" target="_blank">Support us</a> <button class="download" data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Download</button> <a class="button specimen" target="_blank" href="%2$s">Spécimen</a> <button class="back" data-url="/fonderie/"></button> </div>',
 			'projet'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div> <button class="back" data-url="/direction-artistique/"></button> </div>',
-			'edition'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div>  <a class="button shopify" href="%2$s" target="_blank">Ajouter à mon panier</a> <button class="back" data-url="/editions/"></button> </div>',
+			'edition'    	=> '<div class="infobar"> <button data-modal-open="modal-%1$s" data-lighbox="content-%1$s">Informations</button> <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div>  %2$s <button class="back" data-url="/editions/"></button> </div>',
 		];
 		// is archive ?
 		if (is_archive()) {
@@ -92,11 +110,14 @@ function pepite_world_infobar($post_format='default', $content=null){
 			$infobar = sprintf( $format[$post_format], $post_format );
 		}
 		elseif ( $post_format=='risographie' && array_key_exists($post_format, $format) ) {
-			$submenu_post = 
+			//$submenu_post = 
 			$infobar = sprintf( $format[$post_format], $content);
 		}
 		elseif ( $post && array_key_exists($post_format, $format) && $post_format=='edition' ) {
 			$infobar = sprintf( $format[$post_format], $post->ID, get_field("bouton_shopify", $post->ID));
+		}
+		elseif ( $post && array_key_exists($post_format, $format) && $post_format=='font' ) {
+			$infobar = sprintf( $format[$post_format], $post->ID, get_field('lien_de_specimen', $post->ID), get_field('lien_de_support', $post->ID));
 		}
 		elseif ( $post && array_key_exists($post_format, $format) ) {
 			$infobar = sprintf( $format[$post_format], $post->ID);
@@ -121,7 +142,7 @@ function pepite_world_gallery_glide()
 		the_row();
 		$is_video = @get_sub_field('galerie_item_is_video',)[0] == 'Oui' ? true : false;
 		$video = pepite_world_filter_video(get_sub_field('galerie_item_video', false, false)); //get_sub_field('galerie_item_video', false, false); //
-		$image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'large');
+		$image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'full');
 		$items[] = $is_video ? $video : $image;
 	}
 

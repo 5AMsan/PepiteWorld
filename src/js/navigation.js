@@ -39,10 +39,16 @@ jQuery(function($) {
     $("body").on('dblclick', '.draggable', function(e) {
         return $(`#item-${$(this).data('id')} a`).trigger('click');;
     });
+    // Handle clic on label
+    $("body").on('click', '#page > .pepite-tab-container label', function(e) {
+        e.preventDefault();
+        return false
+            //return $(`#item-${$(this).data('id')} a`).trigger('click');;
+    });
+
 
     // Capture click on labels, links are tracked from within labels 
     $('body').on('click', '#page > .pepite-tab-container a:not([target]):not([href^=mailto])', (e) => {
-
         // stop link click and label animation (checkbox won't be checked)
         e.preventDefault();
 
@@ -59,7 +65,7 @@ jQuery(function($) {
         // Update browser history
         history.pushState(null, null, url.href);
 
-        // Hash
+        // Hash URL only
         if (location.hash) {
             $(`#post-${targetContainer} > div.content`).animate({ scrollTop: $(location.hash).offset().top - 200 }, 1000);
             return true;
@@ -67,21 +73,33 @@ jQuery(function($) {
 
         // Is some project to unload ?
         if (link != '/direction-artistique/' && $('#projet').data('loaded') != '/direction-artistique/') {
+            // console.log("Unloading project");
             unloadSubContainer('projet');
-        }
-        if (link != '/editions/' && $('#edition').data('loaded') != '/editions/') {
+        } else if (link != '/editions/' && $('#edition').data('loaded') != '/editions/') {
+            // console.log("Unloading edition");
             unloadSubContainer('edition');
         }
+        // else {
+        //     var containerReady = true;
+        // }
 
         // skip ajax load if already loaded
         if ($(`#${targetContainer}`).data('loaded') == link) {
+            // console.log(`#${targetContainer} already loaded`);
             return checkbox.prop('checked', true);
         }
+
+        // remove active class to last container
+        // $('input + label').removeClass('active');
 
         // Manage page load
         //loader.addClass('active').trigger('classChanged');
         $.ajax({ url: link })
             .success(response => {
+                // console.log('server responded for link ' + link)
+                // console.log(`#${targetContainer} will get content`)
+                // console.log(`#${response.content}`)
+
                 $(`#${targetContainer}`).data('loaded', link)
                     .html(response.content)
                     .fadeIn('fast');
@@ -91,13 +109,13 @@ jQuery(function($) {
 
                 switch (targetContainer) {
                     case 'projet':
-                        var init = location.pathname == '/direction-artistique/' ? initDrag() : [window.initMicroModal(), initGlide(), initInfobar()];
+                        var init = location.pathname == '/direction-artistique/' ? initDrag() : [window.initMicroModal(), initInfobar(), initGlide()];
                         break;
                     case 'font':
                         initFontsampler();
                         break;
                     case 'edition':
-                        var init = location.pathname == '/edition/' ? true : [window.initMicroModal(), initGlide(), initInfobar()];
+                        var init = location.pathname == '/edition/' ? true : [window.initMicroModal(), initInfobar(), initGlide()];
                         break;
                     case 'home':
                         var init = [window.initMicroModal()];
@@ -106,8 +124,12 @@ jQuery(function($) {
 
             })
             .done(function() {
+                // console.log("content loaded");
                 //loader.removeClass('active').trigger('classChanged');
-            });
+            })
+            .fail(function() {
+                // console.log('failed')
+            })
 
         return true;
 
@@ -119,16 +141,13 @@ jQuery(function($) {
         $(`label[data-link="${location.href}"`).trigger('click');
     };
 
-    function unloadSubContainer(el) {
+    async function unloadSubContainer(el) {
         initInfobar(true);
         var element = $(`#${el}`);
-        element.fadeOut('fast', function() {
-            $(this).html('');
-            $(this).data('loaded', 'false');
-            setTimeout(() => {
-                $(this).css('display', 'block');
-            }, 1000);
-        });
+        element.html('');
+        element.data('loaded', 'false');
+        console.log(`#${el} unloaded, container will show back`)
+        element.css('display', 'block');
     }
 
     function initInfobar(reset) {
@@ -139,7 +158,7 @@ jQuery(function($) {
     }
 
     function initVimeo($el, index) {
-
+        var context = $el.parents(".content-wrapper").attr('id');
         var iframe = $el.get(0);
         var player = new Vimeo.Player(iframe, {
             autopause: true,
@@ -147,57 +166,79 @@ jQuery(function($) {
             background: true,
             byline: false
         });
-
-        window.vimeoPlayers[index] = player;
+        if (!window.vimeoPlayers[context]) window.vimeoPlayers[context] = []
+        window.vimeoPlayers[context][index] = player;
+        console.log(window.vimeoPlayers)
         player.on('bufferend', function() {
             // is player on active slide ?
-            if (player.element.parentNode.parentNode.classList.contains('glide__slide--active')) {
-                try {
-                    player.play();
-                } catch (e) {
+            // if (player.element.parentNode.parentNode.classList.contains('glide__slide--active')) {
+            if ($el.parents('.glide__slide--active').length > 0) {
+                player.getPaused().then(function(paused) {
+                    if (paused) {
+                        player.play();
+                        console.log(`autoplay was called on Vimeo object #${index}.`)
+                    }
+                }).catch(function(e) {
                     console.error(e);
-                }
+                });
             }
         });
 
         return player;
     }
 
-    function initGlide(post) {
+    function initGlide() {
         // let glideCar;
-        let sliders = document.querySelectorAll('.glide');
+        let sliders = document.querySelectorAll('.glide')
         for (var i = 0; i < sliders.length; i++) {
             try {
                 const glideCar = new Glide(sliders[i], {
                     type: 'carousel',
                 });
                 glideCar.on('build.after', function() {
-                        let context = $(glideCar.selector).parent();
-                        context.parent().find('[data-slide-total]').attr("data-slide-total", context.find('.glide__slide:not(.glide__slide--clone)').length);
+                        let $context = $(glideCar.selector).parent();
+                        $context.parent().find('[data-slide-total]').attr("data-slide-total", $context.find('.glide__slide:not(.glide__slide--clone)').length);
                     })
                     .on('run.after', function(e) {
-                        $('[data-slide-current]').attr("data-slide-current", glideCar.index + 1);
+                        $('[data-slide-current]').attr("data-slide-current", glideCar.index + 1)
                     })
                     .on('run.before', function(e) {
-                        window.vimeoPlayers.forEach(player => {
-                            try {
-                                player.pause();
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        });
+                        // pause all players while exiting
+                        var context = $(glideCar.selector).parents(".content-wrapper").attr('id')
+                        if (!window.vimeoPlayers[context]) return;
+                        var player = window.vimeoPlayers[context][glideCar.index];
+                        if (!player) return;
+                        //console.log(`Try to pause player ${glideCar.index}.`)
+                        try {
+                            player.pause();
+                            console.log(`player ${glideCar.index} was paused.`)
+                        } catch (e) {
+                            // not a player, whatever
+                            console.error(e);
+                        }
                     })
                     .on('run.after', function(e) {
-                        // try {
-                        //     window.vimeoPlayers[glideCar.index].play();
-                        // } catch (e) {}
+                        // pause current player while entering
+                        var context = $(glideCar.selector).parents(".content-wrapper").attr('id')
+                        if (!window.vimeoPlayers[context]) return;
+                        var player = window.vimeoPlayers[$(glideCar.selector).parents(".content-wrapper").attr('id')][glideCar.index];
+                        if (!player) return;
+                        console.log(`Try to launch player ${glideCar.index}.`)
+                        try {
+                            player.play();
+                            //console.log(`player ${glideCar.index} was launched.`)
+                        } catch (e) {
+                            // not a player, whatever
+                            console.error(e);
+                        }
                     })
                     .on('mount.after', function() {
                         // initialize Vimeo objects
-                        $(`.glide__slides > li:not(.glide__slide--clone)`).each(function(e) {
-                            iframe = $(this).find('iframe');
+                        $(glideCar.selector).find(`.glide__slides > li:not(.glide__slide--clone)`).each(function(e) {
+                            iframe = $(this).find('iframe')
                             if (typeof Vimeo != 'undefined' && iframe.length) {
-                                initVimeo(iframe, e);
+                                console.log('video found')
+                                initVimeo(iframe, e)
                             }
                         });
 
