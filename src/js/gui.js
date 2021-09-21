@@ -3,7 +3,16 @@
  */
 import MicroModal from 'micromodal';
 window.initMicroModal = function() {
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     MicroModal.init({
+        onShow: modal => {
+            if (modal.classList.contains('mentions-legales') ||
+                modal.classList.contains('politique-de-confidentialite') ||
+                width < 767) {
+                document.body.appendChild(modal);
+                document.body.appendChild(document.getElementById('modal-overlay'));
+            }
+        },
         onClose: modal => modal.previousElementSibling.style['pointer-events'] = 'inherit',
         openTrigger: 'data-modal-open',
         //closeTrigger: 'data-modal-close',
@@ -42,30 +51,6 @@ window.randomizeDrag = function($) {
 
 jQuery(document).ready(function($) {
 
-    // observe loader class mutation
-    // var $el = $(".loader-wrapper");
-    // var observer = new MutationObserver(function(mutations) {
-    //     mutations.forEach(function(mutation) {
-    //         if (mutation.attributeName === "class") {
-    //             var attributeValue = $(mutation.target).prop(mutation.attributeName).split(' ');
-    //             console.log("Class attribute changed to:", attributeValue);
-    //             if (attributeValue.indexOf('active') !== -1) {
-    //                 console.log("in");
-    //                 window.LoaderInterval = setInterval(() => {
-    //                     window.loaderLoadedFont = window.loaderLoadedFont == window.loaderFonts.length ? 0 : window.loaderLoadedFont + 1
-    //                     console.log(window.loaderFonts.length, window.loaderLoadedFont)
-    //                     $('.loader-wrapper .loader').css('font-family', window.loaderFonts[window.loaderLoadedFont]);
-    //                 }, 100);
-    //             } else {
-    //                 clearInterval(window.LoaderInterval);
-    //             }
-    //         }
-    //     });
-    // });
-    // observer.observe($el[0], {
-    //     attributes: true
-    // });
-
     let padding = 32;
     let menuWidth = $(".draggable").width() / 2 + $('.pepite-tab-container nav.secondary').width() + parseInt($('#post-projet .content').css('padding-left').replace(/\D/g, ''), 10) + parseInt($('#post-projet .content').css('margin-left').replace(/\D/g, ''), 10);
     let constraint = [
@@ -75,8 +60,14 @@ jQuery(document).ready(function($) {
         $('#post-projet .content').width() - padding,
         $('#post-projet .content').height() - padding
     ];
-    $(".draggable").draggable({ containment: constraint, scroll: false, stack: 'img', distance: 0 });
-    window.randomizeDrag($);
+    
+    /* Delay Draggable init*/
+    $('#post-projet .content').css('opacity', 0);
+    setTimeout(function(){
+        $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
+        window.randomizeDrag($);
+        $('#post-projet .content').animate({opacity:1}, 500);
+    }, 500);
 
     $(document).on('click', '[data-modal-close], [data-micromodal-close]', function() {
         // var modalId = $(this).data('modal-close') ? $(this).data('modal-close') : $(this).data('micromodal-close');
@@ -97,20 +88,44 @@ jQuery(document).ready(function($) {
 
     /** FontSampler  */
     // allow click on font title on `fonderie`
-    if ($('.fontsampler-wrapper').length > 1) $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
+    if ($('.fontsampler-wrapper').length > 1) {
+        $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
+        $('.type-tester__content').attr('contenteditable', false);
+    }
 
-    // Activate custom button for fontsampler actions
-    // if ($('.fontsampler-wrapper').length == 1) {
-    //     $('#post-font').on('click', '.infobar .support-us', function(){
-    //         var win = window.open($('.fontsampler-wrapper.initialized .fontsampler-ui-block[data-block=buy] a').attr('href'), '_blank');
-    //         win.focus();
-    //     })
-    //     $('#post-font').on('click', '.infobar .download', function(){
-    //         var win = window.open($('.fontsampler-wrapper.initialized .fontsampler-ui-block[data-block=specimen] a').attr('href'), '_blank');
-    //         win.focus();
-    //     })
-    // } 
+    // Projet NAV close button
+    $('body').on('click', '#projet-nav', function(e) {
+        e.preventDefault();
+        if (e.target.tagName.toLowerCase() != "nav") {
+            return
+        }
+        var $menu = $(this).toggleClass("closed");
+        $menu.prev('.infobar').toggleClass('open');
+        if ($menu.data('open')) {
+            $menu.data('open', false)
+                .find('ul')
+                .hide("slide", { direction: "left" });
+            // $menu.prev('.infobar').removeClass('open')
+        } else {
+            $menu.data('open', true)
+                .find('ul')
+                .show("slide", { direction: "right" });
+            // $menu.prev('.infobar').addClass('open')
+        }
+    });
 
+    // Default to EUR
+    wp.hooks.addFilter('misc.pricing.defaultCurrencyCode', 'wpshopify', function(defaultCode) {
+        return 'EUR';
+    });
 
-
+    // Animation Paragraph Noms
+    $('#c-noms__text').appendTo($('#post-home .content'));
+    $('.c-noms__title').on("mouseenter", function() {
+        animateParagraph(true);
+        $('#c-noms__text').show()
+    }).on("mouseleave", function() {
+        $('#c-noms__text').hide()
+        animateParagraph(false);
+    });
 });

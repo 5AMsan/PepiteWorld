@@ -101,32 +101,38 @@ nav a {
         padding: 0;
         li {
             list-style: none;
-            border-collapse: collapse;
             border: 1px solid #333333;
-            padding: .5rem;
+            padding: .45rem;
             &:not(:last-of-type) {
                 border-bottom: none;
             }
         }
     }
 }
+
 #post-projet {
     .infobar {
-        margin-left: 12rem;
-
+        margin-left: 5rem;
+        transition: margin-left .25s ease-in-out;
     }
-    .infobar:not(.no-nav) + #projet-nav {
-        margin-top: -2.4rem;
-
+    .infobar:not(.no-nav)+#projet-nav {
+        margin-top: -2.5rem;
     }
 }
+
+@media screen and (min-width: 813px) {
+    #post-projet {
+        .infobar.open {
+            margin-left: 15rem;
+        }
+    }
+}
+
 #post-risographie {
     .infobar {
         margin-bottom: 6rem;
-
     }
 }
-
 
 
 /** Extended links **/

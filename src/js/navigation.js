@@ -21,37 +21,30 @@
 //     return element.parentNode && hasSomeParentTheClass(element.parentNode, classname);
 // }
 
+import Glide from '@glidejs/glide';
+
 jQuery(function($) {
 
     // Vimeo 
     window.vimeoPlayers = [];
 
-
     // Glide carousel
+    window.Glides = {};
     if ($('.glide').length) initGlide();
 
     // Fontsampler
     if ($('.fontsampler-wrapper').length) initFontsampler();
 
-    // var loader = $('.loader-wrapper')
-
     // Handle double click on draggable
     $("body").on('dblclick', '.draggable', function(e) {
+        e.stopPropagation();
         return $(`#item-${$(this).data('id')} a`).trigger('click');;
     });
-    // Handle clic on label
-    $("body").on('click', '#page > .pepite-tab-container label', function(e) {
-        e.preventDefault();
-        return false
-            //return $(`#item-${$(this).data('id')} a`).trigger('click');;
-    });
-
 
     // Capture click on labels, links are tracked from within labels 
     $('body').on('click', '#page > .pepite-tab-container a:not([target]):not([href^=mailto])', (e) => {
         // stop link click and label animation (checkbox won't be checked)
         e.preventDefault();
-
         try {
             var url = new URL($(e.target).data('link') || e.target.href);
         } catch (e) {
@@ -61,9 +54,16 @@ jQuery(function($) {
         var link = url.pathname;
         var targetContainer = $(e.target).attr('rel');
         var checkbox = $(`#item-${targetContainer}`);
-
         // Update browser history
         history.pushState(null, null, url.href);
+
+        // reflow Glide on content (static) page
+        if (targetContainer == "risographie" && window.Glides[targetContainer]) {
+            window.Glides[targetContainer].forEach(function(glide) {
+                // ise timeout to refresh after tab size changed
+                setTimeout(() => { glide.update() }, 2000);
+            })
+        }
 
         // Hash URL only
         if (location.hash) {
@@ -71,40 +71,31 @@ jQuery(function($) {
             return true;
         }
 
+        // Update  browser title
+        if ($(e.target).text()) document.title = $(e.target).text();
+
         // Is some project to unload ?
         if (link != '/direction-artistique/' && $('#projet').data('loaded') != '/direction-artistique/') {
-            // console.log("Unloading project");
             unloadSubContainer('projet');
         } else if (link != '/editions/' && $('#edition').data('loaded') != '/editions/') {
-            // console.log("Unloading edition");
             unloadSubContainer('edition');
         }
-        // else {
-        //     var containerReady = true;
-        // }
 
         // skip ajax load if already loaded
         if ($(`#${targetContainer}`).data('loaded') == link) {
-            // console.log(`#${targetContainer} already loaded`);
             return checkbox.prop('checked', true);
         }
 
-        // remove active class to last container
-        // $('input + label').removeClass('active');
-
         // Manage page load
-        //loader.addClass('active').trigger('classChanged');
         $.ajax({ url: link })
             .success(response => {
-                // console.log('server responded for link ' + link)
-                // console.log(`#${targetContainer} will get content`)
-                // console.log(`#${response.content}`)
 
                 $(`#${targetContainer}`).data('loaded', link)
                     .html(response.content)
-                    .fadeIn('fast');
-                //loader.removeClass('active').trigger('classChanged');
-                // Content is loaded, run label animation
+                    .fadeIn('fast', function(e) {
+                        $(this).find('.content').scrollTop(0)
+                    })
+                    // Content is loaded, run label animation
                 checkbox.prop('checked', true);
 
                 switch (targetContainer) {
@@ -115,20 +106,19 @@ jQuery(function($) {
                         initFontsampler();
                         break;
                     case 'edition':
-                        var init = location.pathname == '/edition/' ? true : [window.initMicroModal(), initInfobar(), initGlide()];
+                        var init = location.pathname == '/edition/' ? true : [window.initMicroModal(), initInfobar(), initGlide(), initWpShopify()];
                         break;
+                        // case 'risographie':
+                        //     var init = [initGlide()];
+                        //     break;
                     case 'home':
                         var init = [window.initMicroModal()];
                         break;
                 }
 
             })
-            .done(function() {
-                // console.log("content loaded");
-                //loader.removeClass('active').trigger('classChanged');
-            })
             .fail(function() {
-                // console.log('failed')
+                console.error(`failed to load content in ${$targetContainer}`);
             })
 
         return true;
@@ -138,7 +128,7 @@ jQuery(function($) {
     // Allow tab update from history
     window.onpopstate = (e) => {
         // trigger click to update tabs state
-        $(`label[data-link="${location.href}"`).trigger('click');
+        $(`label[data-link="${location.href}"] .tab-title a`).trigger('click');
     };
 
     async function unloadSubContainer(el) {
@@ -146,8 +136,11 @@ jQuery(function($) {
         var element = $(`#${el}`);
         element.html('');
         element.data('loaded', 'false');
-        console.log(`#${el} unloaded, container will show back`)
         element.css('display', 'block');
+    }
+
+    function initWpShopify() {
+        wp.hooks.doAction('wpshopify.render');
     }
 
     function initInfobar(reset) {
@@ -162,40 +155,63 @@ jQuery(function($) {
         var iframe = $el.get(0);
         var player = new Vimeo.Player(iframe, {
             autopause: true,
-            autoplay: false,
+            autoplay: true,
             background: true,
-            byline: false
+            byline: false,
+            controls: false,
+            loop: true,
+            portrait: false,
+            title: false
         });
         if (!window.vimeoPlayers[context]) window.vimeoPlayers[context] = []
         window.vimeoPlayers[context][index] = player;
-        console.log(window.vimeoPlayers)
-        player.on('bufferend', function() {
-            // is player on active slide ?
-            // if (player.element.parentNode.parentNode.classList.contains('glide__slide--active')) {
-            if ($el.parents('.glide__slide--active').length > 0) {
-                player.getPaused().then(function(paused) {
-                    if (paused) {
-                        player.play();
-                        console.log(`autoplay was called on Vimeo object #${index}.`)
-                    }
-                }).catch(function(e) {
-                    console.error(e);
-                });
-            }
-        });
+
+        /**
+         * Buffer events can't be accessed from stopped players (aytoplay=0)
+         * Try to init play from Glide / not working 
+         * Try from player ready event
+         */
+        // player.on('bufferend', function() {
+        player.ready()
+            .then(function() {
+                //player.setVolume(0);
+                // is player on active slide ? Both test are working
+                // if (player.element.parentNode.parentNode.classList.contains('glide__slide--active')) {
+                if ($el.parents('.glide__slide--active').length > 0) {
+                    player.getPaused().then(function(paused) {
+                        if (paused) {
+                            player.play();
+                        }
+                    }).catch(function(e) {
+                        console.error(e);
+                    });
+                }
+            });
 
         return player;
     }
 
     function initGlide() {
+        // Disable Glide
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if (width < 813) return;
+
         // let glideCar;
         let sliders = document.querySelectorAll('.glide')
         for (var i = 0; i < sliders.length; i++) {
             try {
                 const glideCar = new Glide(sliders[i], {
                     type: 'carousel',
-                });
+                    gap: 0,
+                    perView: 1,
+                    focusAt: 'center'
+                })
                 glideCar.on('build.after', function() {
+                        // Store Glides references
+                        if (!window.Glides[$(glideCar.selector).parents('.content-wrapper').attr('id')]) {
+                            window.Glides[$(glideCar.selector).parents('.content-wrapper').attr('id')] = [];
+                        }
+                        window.Glides[$(glideCar.selector).parents('.content-wrapper').attr('id')].push(glideCar);
                         let $context = $(glideCar.selector).parent();
                         $context.parent().find('[data-slide-total]').attr("data-slide-total", $context.find('.glide__slide:not(.glide__slide--clone)').length);
                     })
@@ -208,13 +224,10 @@ jQuery(function($) {
                         if (!window.vimeoPlayers[context]) return;
                         var player = window.vimeoPlayers[context][glideCar.index];
                         if (!player) return;
-                        //console.log(`Try to pause player ${glideCar.index}.`)
                         try {
                             player.pause();
-                            console.log(`player ${glideCar.index} was paused.`)
                         } catch (e) {
-                            // not a player, whatever
-                            console.error(e);
+                            //console.error(e);
                         }
                     })
                     .on('run.after', function(e) {
@@ -223,10 +236,8 @@ jQuery(function($) {
                         if (!window.vimeoPlayers[context]) return;
                         var player = window.vimeoPlayers[$(glideCar.selector).parents(".content-wrapper").attr('id')][glideCar.index];
                         if (!player) return;
-                        console.log(`Try to launch player ${glideCar.index}.`)
                         try {
                             player.play();
-                            //console.log(`player ${glideCar.index} was launched.`)
                         } catch (e) {
                             // not a player, whatever
                             console.error(e);
@@ -234,14 +245,15 @@ jQuery(function($) {
                     })
                     .on('mount.after', function() {
                         // initialize Vimeo objects
+                        // $(glideCar.selector).find(`.glide__slides > li`).each(function(e) {
                         $(glideCar.selector).find(`.glide__slides > li:not(.glide__slide--clone)`).each(function(e) {
-                            iframe = $(this).find('iframe')
-                            if (typeof Vimeo != 'undefined' && iframe.length) {
-                                console.log('video found')
-                                initVimeo(iframe, e)
-                            }
+                            setTimeout(() => {
+                                var iframe = $(this).find('iframe')
+                                if (typeof Vimeo != 'undefined' && iframe.length) {
+                                    initVimeo(iframe, e)
+                                }
+                            }, 750);
                         });
-
                     })
                     .mount();
             } catch (e) {
@@ -255,6 +267,10 @@ jQuery(function($) {
             try {
                 // offical Fontsampler function to init all font samplers
                 fontsamplerSetup();
+                if ($('.fontsampler-wrapper').length > 1) {
+                    $('.fontsampler-wrapper.initialized').children().css('pointer-events', 'none');
+                    $('.type-tester__content').attr('contenteditable', false);
+                }
             } catch (e) {
                 console.error('Fontsampler error: ', e);
             }
@@ -262,9 +278,17 @@ jQuery(function($) {
     }
 
     function initDrag() {
+        if (!$(".draggable") || $(".draggable").length == 0) return;
         try {
-            $(".draggable").draggable({ containment: "#post-projet .content", scroll: false });
-            window.randomizeDrag($);
+            // $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
+            // window.randomizeDrag($);
+            /* Delay Draggable init*/
+            $('#post-projet .content').css('opacity', 0);
+            setTimeout(function(){
+                $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
+                window.randomizeDrag($);
+                $('#post-projet .content').animate({opacity:1}, 500);
+            }, 5000);
         } catch (e) {
             console.error('Drag error: ', e);
         }

@@ -114,7 +114,7 @@ function pepite_world_infobar($post_format='default', $content=null){
 			$infobar = sprintf( $format[$post_format], $content);
 		}
 		elseif ( $post && array_key_exists($post_format, $format) && $post_format=='edition' ) {
-			$infobar = sprintf( $format[$post_format], $post->ID, get_field("bouton_shopify", $post->ID));
+			$infobar = sprintf( $format[$post_format], $post->ID, do_shortcode(get_field("bouton_shopify", $post->ID)) );
 		}
 		elseif ( $post && array_key_exists($post_format, $format) && $post_format=='font' ) {
 			$infobar = sprintf( $format[$post_format], $post->ID, get_field('lien_de_specimen', $post->ID), get_field('lien_de_support', $post->ID));
@@ -240,11 +240,9 @@ if (!function_exists('pepite_world_filter_video')) {
 
 		$id = $matches[1];
 		$content = "<div style=\"padding:64.52% 0 0 0;position:relative;\">
-		<iframe src=\"https://player.vimeo.com/video/{$id}?autoplay=1&loop=1&title=0&byline=0&portrait=0\" 
-			style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen>
-		</iframe>
-	</div>
-	<script src=\"https://player.vimeo.com/api/player.js\"></script>;";
+		<iframe src=\"https://player.vimeo.com/video/{$id}\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;\" frameborder=\"0\" allow=\"autoplay\" ></iframe>
+		</div>";
+		$content .= "<script src=\"https://player.vimeo.com/api/player.js\"></script>";
 
 		return $content;
 	}

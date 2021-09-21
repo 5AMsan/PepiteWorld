@@ -64,12 +64,13 @@ function pepite_world_font() {
 	global $post;
 	$font_id = get_field('font_main', $post->ID);
 	remove_filter('the_content', 'pepite_world_font_content_filter');
-	$content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id text=\"{$post->post_title}\"]") . apply_filters( 'the_content', get_the_content($post) );
+	// $content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id text=\"{$post->post_title}\"]") . apply_filters( 'the_content', get_the_content($post) );
+	$content = pepite_world_infobar('font') . do_shortcode("[fontsampler id=$font_id ]") . apply_filters( 'the_content', get_the_content($post) );
 	add_filter('the_content', 'pepite_world_font_content_filter');
 
 	$lightbox = get_field('texte_download', $post->ID);
 	$dl_button = '<a class="button download" target="_blank" href="'.get_field('lien_de_telechargement', $post->ID).'">Download</a>';
-	$support_button = '<a class="button support-us" target="_blank" href="'.get_field('lien_de_support', $post->ID).'">Support us</a>';
+	$support_button = '<a class="button support-us" target="_blank" href="'.get_field('lien_de_support', $post->ID).'">Pay what you want</a>';
 	$lightbox .= "<footer>$dl_button $support_button</footer>";
 	// add lightbox and return new content
 	return $content . pepite_world_content_lightbox($lightbox);

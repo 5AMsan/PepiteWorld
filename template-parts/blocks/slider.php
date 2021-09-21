@@ -32,28 +32,30 @@ $items = array();
 if (have_rows('galerie')) {
     ?>
     <div class="slider-counter diamond"><span data-slide-current="1"></span> / <span data-slide-total="-"></span></div>
-    <div class="glide">
-        <div data-glide-el="track" class="glide__track">
-            <ul class="glide__slides">
-            <?php
-            while( have_rows('galerie') ) {
-                the_row();
-                $is_video = @get_sub_field('galerie_item_is_video', )[0] == 'Oui' ? true:false;
-                $video = pepite_world_filter_video(get_sub_field('galerie_item_video', false, false)); //get_sub_field('galerie_item_video', false, false); //
-                $image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'full');
-                $item = $is_video ? $video : $image;
-                ?>
-                <li class="glide__slide">
-                    <?php echo $item ?>
-                </li>
+    <div class="glide-wrapper">
+        <div class="glide">
+            <div data-glide-el="track" class="glide__track">
+                <ul class="glide__slides">
                 <?php
-            }
-            ?>
-            </ul>
-        </div>
-        <div class="glide__arrows" data-glide-el="controls">
-            <button class="glide__arrow glide__arrow--left" data-glide-dir="&lt;">Prev</button>
-            <button data-glide-dir="&gt;" class="glide__arrow glide__arrow--right">Next</button>
+                while( have_rows('galerie') ) {
+                    the_row();
+                    $is_video = @get_sub_field('galerie_item_is_video', )[0] == 'Oui' ? true:false;
+                    $video = pepite_world_filter_video(get_sub_field('galerie_item_video', false, false)); //get_sub_field('galerie_item_video', false, false); //
+                    $image = wp_get_attachment_image(get_sub_field('galerie_item_image'), 'full');
+                    $item = $is_video ? $video : $image;
+                    ?>
+                    <li class="glide__slide">
+                        <?php echo $item ?>
+                    </li>
+                    <?php
+                }
+                ?>
+                </ul>
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="&lt;">Prev</button>
+                <button data-glide-dir="&gt;" class="glide__arrow glide__arrow--right">Next</button>
+            </div>
         </div>
     </div>
     <?php

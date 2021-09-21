@@ -29,8 +29,8 @@ function pepite_world_archive_projet() {
     }
     wp_reset_postdata();
     
-    // -a-d-d--l-i-g-h-t-b-o-x- and return new content
-    return $content; //. pepite_world_content_lightbox($post_content);
+    // Return new content
+    return $content; 
 }
 // add_filter('the_content', 'pepite_world_projets_content');
 }
@@ -71,7 +71,6 @@ function pepite_world_nav_projet($echo=false){
     $query = new WP_Query( array(
         'post_type'     => 'projet',
         'numberposts'   => -1,
-
     ));
     
     if( $query->have_posts() ) {
@@ -83,7 +82,7 @@ function pepite_world_nav_projet($echo=false){
             $query->the_post();
             $id = get_the_id();
             $url = get_the_permalink();
-            $nav[] = "<li id=\"item-$id\" ><a href=\"$url\" data-link=\"$url\"  rel=\"projet\" data-id=\"$id\" >";
+            $nav[] = "<li id=\"item-$id\"><a href=\"$url\" data-link=\"$url\" rel=\"projet\" data-id=\"$id\">";
             $nav[] = get_the_title();
             $nav[] = "</a></li>";
         endwhile;

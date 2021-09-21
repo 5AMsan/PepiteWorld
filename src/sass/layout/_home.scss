@@ -5,23 +5,21 @@
     .tab-title {
         font-family: 'pepite-logo-1';
         letter-spacing: 0.05em;
-        font-size: 2em;
+        font-size: rem-calc(22);
     }
     .content {
         font-size: 40px;
-
         *:last-child {
             margin-bottom: 0;
         }
-
         .studio-fx {
             .studio-fx__bg {
                 background-color: transparent;
-                -webkit-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
-                -moz-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
-                -ms-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
-                -o-transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
-                transition: opacity .3s cubic-bezier(.45,1.16,.85,1.2);
+                -webkit-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+                -moz-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+                -ms-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+                -o-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+                transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
             }
         }
     }
@@ -35,23 +33,21 @@
 }
 
 #post-font {
-
     .fontsampler-nav-item {
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 1px solid $color__border-square;
-        
         // cursor: pointer;
         //  & > * {
         //      pointer-events: none;
         //  }
-        
         .font-title {
             flex-basis: 100%;
         }
-        .font-author, .font-variants {
+        .font-author,
+        .font-variants {
             flex-basis: 50%;
         }
         .font-variants {
@@ -59,31 +55,41 @@
         }
         /** Font sampler title only **/
         .fontsampler-ui-block:not(.full) {
-            display: none ;
+            display: none;
         }
         .type-tester__content {
-            font-size: 90px !important;
+            //font-size: 90px !important;
             text-align: center !important;
+            @media screen and (max-width: 813px) {
+                font-size: 50px !important;
+            }
         }
-
-
     }
-    
-    .fontsampler-interface .selectric > .label,
-    .fontsampler-interface .selectric > .button {
+    .fontsampler-interface .selectric>.label,
+    .fontsampler-interface .selectric>.button {
         background-color: white;
+    }
+    // @media screen and (max-width: 813px) {
+    //     .type-tester__content,
+    //     {
+    //         font-size: 60px !important;
+    //     }
+    // }
+}
+
+@media screen and (max-width: 1024px) {
+    .fontsampler-wrapper .fontsampler-interface.columns-4 .fontsampler-ui-block.column {
+        width: 50% !important;
     }
 }
 
 .content-wrapper {
-
-    & > .fontsampler-wrapper, 
-    & > .font-info {
-        margin-bottom: 3rem; 
-        padding-bottom: 4rem; 
+    &>.fontsampler-wrapper,
+    &>.font-info {
+        margin-bottom: 3rem;
+        padding-bottom: 4rem;
         border-bottom: 1px solid $color__border-square;
     }
-
     .row {
         display: flex;
         justify-content: space-between;
@@ -91,19 +97,15 @@
             @include column-width(2);
         }
     }
-
     // .font-info {
-
     // }
-
 }
 
-button ~ button {
-	margin-left: 1rem;
+button~button {
+    margin-left: 1rem;
 }
 
 .tab-title {
-
     a {
         text-decoration: none;
     }

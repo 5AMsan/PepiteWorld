@@ -97,6 +97,16 @@ if ( ! function_exists( 'pepite_world_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'pepite_world_setup' );
 
+
+// add_filter('body_class','mobile_theme_body_class');     
+function mobile_theme_body_class( $classes ){
+
+    if ( wp_is_mobile() ){
+        $classes[] = 'mobile';
+    }
+    return $classes;
+}
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -154,27 +164,30 @@ function pepite_world_widgets_init() {
  */
 function pepite_world_scripts() {
 	wp_enqueue_style( 'pepite-world-style', get_stylesheet_directory_uri()."/dist/css/style.min.css" );
-
+	
 	//wp_enqueue_script( 'pepite-world-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
-	wp_register_script( 'pepite-world-app', get_template_directory_uri() . '/dist/js/pepite-world.js', array('jquery', 'jquery-ui-draggable'), null, true );
+	wp_register_script( 'pepite-world-app', get_stylesheet_directory_uri() . '/dist/js/pepite-world.js', array('jquery', 'jquery-ui-draggable', 'wpshopify-public'), null, true );
 	wp_localize_script( 'pepite-world-app', 'dragimage', array("image-0"=>'empty'));
 	wp_enqueue_script( 'pepite-world-app');
-	
-	// wp_enqueue_script( 'pepite-world-ajax-load', get_template_directory_uri() . '/js/ajax-loader.js', array('jquery', 'jquery-ui-draggable'), null, true );
-	
-	// Direction Artistique
-	// wp_register_script( 'pepite-world-direction-artistique', get_template_directory_uri() . '/dist/js/direction-artistique.js', array('jquery-ui-draggable'), null, true );
 
 	//Glide Slider
-	wp_enqueue_script( 'pepite-world-glide', get_template_directory_uri() . '/node_modules/@glidejs/glide/dist/glide.min.js', array(), null, true );
-	wp_enqueue_script( 'pepite-world-glide', get_template_directory_uri() . '/js/glide.js', array(), null, true );
+	// wp_enqueue_script( 'pepite-world-glide', get_stylesheet_directory_uri() . '/node_modules/@glidejs/glide/dist/glide.min.js', array(), null, true );
+	// wp_enqueue_script( 'pepite-world-glide', get_stylesheet_directory_uri() . '/js/glide.js', array(), null, true );
 
-	// if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-	// 	wp_enqueue_script( 'comment-reply' );
-	// }
 }
 add_action( 'wp_enqueue_scripts', 'pepite_world_scripts' );
+
+// Email Obfusctation
+if (function_exists('c2c_obfuscate_email')) {
+	function pepite_world_email_obfuscate( $atts, $content = null ) {
+		return c2c_obfuscate_email($content);
+		/*
+		<a href="mailto:message@pepite.world&amp;subject=Contact Pepite.World" rel="mailto">message@pepite.world</a>
+		*/
+	}
+	// add_shortcode( 'email', 'pepite_world_email_obfuscate' );
+}
+
 
 // SVG
 function pepite_world_mime_types($mimes) {

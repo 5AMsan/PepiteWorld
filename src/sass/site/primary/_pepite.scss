@@ -89,12 +89,18 @@ input[type=submit]:hover {
 
 /* Interlettage ensemble et taille texte */
 
-.pepite-tab-container .tab-title {
-    letter-spacing: 0.05em;
-}
-
 .pepite-tab-container .content {
     font-size: 15px;
+}
+
+@supports (-moz-appearance: none) {
+    @media screen and (min-width: 813px) and (orientation: landscape) {
+        #post-home .tab-title,
+        #projet-nav ul li,
+        #edition-nav ul li {
+            letter-spacing: -5px;
+        }
+    }
 }
 
 #projet-nav ul li,
@@ -203,7 +209,6 @@ button {
 
 #post-home .tab-title {
     font-size: 2em;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
@@ -214,13 +219,22 @@ button {
     color: black;
 }
 
-#post-home .content {
-    font-size: 32px;
-    padding-top: 0.5em!important;
-}
-
-#home p {
-    margin-top: 0;
+#post-home {
+    .content {
+        font-size: 32px;
+        padding-top: 0.5em!important;
+    }
+    #home p {
+        margin-top: 0;
+    }
+    .mobile {
+        display: none;
+    }
+    @media screen and (max-width: 813px) {
+        .mobile {
+            display: block;
+        }
+    }
 }
 
 #post-home dfn,
@@ -263,6 +277,10 @@ a[rel=mailto] {
     font-family: 'pipemedium';
 }
 
+div#home {
+    overflow: hidden;
+}
+
 .hoverimage-3:hover img,
 .hoverimage-3:hover a img {
     opacity: 1;
@@ -278,17 +296,111 @@ a[rel=mailto] {
     margin-top: 1.5em;
 }
 
-.c-upsell__bg {
-    z-index: 1000;
-}
 
-.c-upsell__text:hover {
-    z-index: 10001;
-    color: #000;
+/* STUDIO:*/
+
+figure {
+    margin: 0;
 }
 
 .c-upsell__title {
+    position: relative;
+    line-height: 0.9;
+    letter-spacing: 0;
+    margin-top: 0;
+    margin-bottom: 0;
     z-index: 1001;
+}
+
+.c-upsell__text {
+    display: inline-block;
+    text-align: left;
+    position: relative;
+    &:hover {
+        color: black;
+        &+.c-upsell__bg {
+            opacity: 1;
+            visibility: visible;
+            img {
+                position: absolute;
+                animation-name: slideUp;
+                animation-timing-function: linear;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+}
+
+.c-upsell__bg {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    max-width: 100%;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    -webkit-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+    -moz-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+    -ms-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+    -o-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+    transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
+    background-color: transparent;
+    img:first-child {
+        max-width: 42vw;
+        top: 20%;
+        left: 33%;
+        animation-duration: 25s;
+    }
+    .c-upsell__bg img:nth-child(2) {
+        max-width: 27vw;
+        top: 52%;
+        left: 2.6%;
+        animation-duration: 21s;
+    }
+    .c-upsell__bg img:nth-child(3) {
+        max-width: 30vw;
+        top: 96%;
+        left: 23%;
+        animation-duration: 23s;
+    }
+    .c-upsell__bg img:nth-child(4) {
+        max-width: 16vw;
+        top: 116%;
+        left: 0;
+        animation-duration: 18s;
+    }
+    .c-upsell__bg img:nth-child(5) {
+        max-width: 27vw;
+        top: 147%;
+        left: 43%;
+        animation-duration: 20s;
+    }
+    .c-upsell__bg img:nth-child(6) {
+        max-width: 32vw;
+        top: 180%;
+        left: 6%;
+        animation-duration: 19s;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -o-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100% {
+        -webkit-transform: translateY(-150vh);
+        -moz-transform: translateY(-150vh);
+        -ms-transform: translateY(-150vh);
+        -o-transform: translateY(-150vh);
+        transform: translateY(-150vh);
+    }
 }
 
 #post-home .content {
@@ -392,14 +504,6 @@ a[rel=mailto] {
     border: .5px solid black;
 }
 
-.modal [role=dialog] {
-    border: none;
-}
-
-#home .modal [role=dialog] {
-    border: none;
-}
-
 .hoverimage-3 {
     cursor: pointer;
 }
@@ -412,22 +516,26 @@ a[rel=mailto] {
 
 /* Noms effets */
 
-#text {
-    opacity: 0;
-    visibility: hidden;
+#c-noms__text {
+    display: none;
     position: absolute;
     z-index: 1000;
     font-family: 'pipemedium';
     text-rendering: geometricprecision;
+    top: 0;
+    left: 0;
+    // width: calc(100% - 0rem); // on soustrait la largeur des marges
+    // height: calc(100% - 0rem);
 }
 
-.c-noms__text:hover+#text {
-    opacity: 1;
-    visibility: visible;
-    position: absolute;
+.c-noms__title:hover {
+    z-index: 1001;
+    // &+#text {
+    //     display: block;
+    // }
 }
 
-.c-noms__text {
+.c-noms__title {
     display: inline-block;
     text-align: left;
     position: relative;
@@ -649,8 +757,8 @@ a[rel=mailto] {
 /* DA */
 
 #post-projet .content {
-    padding: 1.5rem;
-    padding-left: 0em;
+    position: relative;
+    padding: 1.5rem 0;
 }
 
 #post-projet p {
@@ -661,17 +769,100 @@ a[rel=mailto] {
     cursor: grab;
 }
 
-#projet-nav ul li a {
-    transition: transform .4s cubic-bezier(.15, .8, .3, 1.2);
+#projet-nav {
+    $alt-height: 2.5rem;
+    overflow: hidden;
+    padding-top: $alt-height;
+    background-color: transparent;
+    &:before {
+        content: url(https://www.pepite.world/wp-content/themes/pepite-world/dist/img/back.svg);
+        border: 1px solid black;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        line-height: 2.25;
+        padding: .45rem;
+        height: $alt-height;
+        width: $alt-height;
+        position: absolute;
+        z-index: 10;
+        background: $color__background-body;
+    }
+    ul {
+        transition: all .2s ease-in-out;
+        transform: scaleY(1);
+        transform-origin: top;
+        li {
+            background-color: $color__background-body;
+        }
+    }
+    &.closed {
+        ul {
+            @media screen and (min-width: 813px) {
+                transform: scaleY(0);
+            }
+        }
+        &:before {
+            content: "☰";
+            line-height: 2;
+        }
+        // &:after {
+        //     content: '';
+        //     border-top: 1px solid #000;
+        //     position: absolute;
+        //     bottom: 0;
+        //     left: 0;
+        //     width: 100%;
+        // }
+    }
+    .modal {
+        margin-top: 40px;
+    }
 }
 
-#projet-nav ul li a:hover {
-    transform: translate3d(0, 10px, 0);
+@media screen and (min-width: 813px) {
+    input[type=radio]:checked+#post-projet #projet-nav {
+        display: block;
+    }
+    #post-font .content {
+        padding-left: 0;
+        padding-top: 1.5rem;
+    }
+    #projet {
+        position: relative;
+    }
+    #projet-nav {
+        margin-top:0 !important;
+        left: 0;
+        top: 0;
+        overflow: visible;
+        transition: all .2s ease-in-out;
+        padding-top: 0;
+        &:before {
+            top: 0;
+            right: 1px;
+            transform: translateX(100%);
+        }
+        &.closed {
+            transform: translateX( calc( (100%) * -1));
+            &:before {
+                right: 0;
+            }
+            &:after {
+                content: '';
+                border-top: 1px solid #000;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+            ul {
+                transform: none;
+            }
+        }
+    }
 }
 
-.diamond {
-    padding: .5rem 0 0.45rem 0;
-}
 
 
 /* Fonderie */
@@ -688,7 +879,7 @@ hr {
     color: black;
 }
 
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 813px) {
     #post-font .content {
         padding-left: 0;
         padding-top: 1.5rem;
@@ -859,126 +1050,114 @@ ul.advgb-tabs-panel li.advgb-tab.advgb-tab-active a {
 /* Risographie */
 
 #risographie {
+    @media (min-width: 813px) {
+        .wp-block-column:not(:first-child) {
+            margin-left: 70px;
+        }
+    }
     padding-top: 0.5rem;
-}
+    .infobar {
+        display: none;
+    }
+    h2 {
+        clear: both;
+        font-size: 40px;
+        font-size: 2.8em;
+        font-weight: normal;
+        font-family: 'pipelight';
+        margin-top: 0;
+        line-height: 1.3em;
+    }
+    h3 {
+        font-size: 40px;
+        font-size: 2.8em;
+    }
+    h4 {
+        font-weight: normal;
+        font-family: 'pipemedium';
+    }
+    p {
+        font-size: 18px;
+    }
+    .infos-supp {
+        font-size: 15px;
+    }
+    #post-risographie .content {
+        padding: 1.5rem;
+        padding-left: 0em;
+    }
+    .glide-wrapper {
+        margin: 0;
+    }
+    &>*:not(.infobar):not(hr) {
+        margin-right: 65px;
+        margin-left: 65px;
+    }
 
-@media (min-width: 782px) {
-    .wp-block-column:not(:first-child) {
-        margin-left: 70px;
+    .wp-block-cover,
+    .wp-block-cover-image {
+        position: relative;
+        background-size: contain;
+        background-position: left;
+        background-repeat: repeat-y;
+        min-height: 430px;
+        height: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+    .wp-block-cover-image .wp-block-cover__inner-container,
+    .wp-block-cover .wp-block-cover__inner-container {
+        width: calc(100% - 30px);
+        z-index: 30;
+    }
+    .wp-block-cover-image.alignleft,
+    .wp-block-cover-image.alignright,
+    .wp-block-cover.alignleft,
+    .wp-block-cover.alignright {
+        max-width: 100%;
+        width: 100%;
+    }
+    .texte-encre-papier {
+        font-weight: normal;
+        font-family: 'pipemedium';
+        margin: 0;
+    }
+    .interieur-risographie a {
+        cursor: url(http://www.pepite-atelier.com/wp-content/uploads/2020/05/Plan-de-travail-1-2.svg) 10 12, pointer;
+        text-decoration: none;
+        color: black;
+    }
+    .interieur-risographie a:hover {
+        color: black!important
+    }
+    .diamond {
+        display: none;
     }
 }
 
-#risographie .infobar {
-    display: none;
-}
-
-#risographie h2 {
-    clear: both;
-    font-size: 40px;
-    font-size: 2.8em;
-    font-weight: normal;
-    font-family: 'pipelight';
-    margin-top: 0;
-    line-height: 1.3em;
-}
-
-#risographie h3 {
-    font-size: 40px;
-    font-size: 2.8em;
-}
-
-#risographie h4 {
-    font-weight: normal;
-    font-family: 'pipemedium';
-}
-
-#risographie p {
-    font-size: 18px;
-}
-
-#risographie .infos-supp {
-    font-size: 15px;
-}
-
-#post-risographie .content {
-    padding: 1.5rem;
-    padding-left: 0em;
-}
-
-.pepite-tab-container input[type=radio]+label:nth-child(8)>* {
-    color: black;
-}
-
-.wp-block-cover,
-.wp-block-cover-image {
-    position: relative;
-    background-size: contain;
-    background-position: left;
-    background-repeat: repeat-y;
-    min-height: 430px;
-    height: 40px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-}
-
-#risographie .interieur-risographie {
-    margin-right: 65px;
-    margin-left: 65px;
-}
-
-.wp-block-cover-image.alignleft,
-.wp-block-cover-image.alignright,
-.wp-block-cover.alignleft,
-.wp-block-cover.alignright {
-    max-width: 100%;
-    width: 100%;
-}
-
-#risographie .texte-encre-papier {
-    font-weight: normal;
-    font-family: 'pipemedium';
-    margin: 0;
-}
-
-.wp-block-cover-image .wp-block-cover__inner-container,
-.wp-block-cover .wp-block-cover__inner-container {
-    width: calc(100% - 30px);
-}
-
-#risographie .interieur-risographie a {
-    cursor: url(http://www.pepite-atelier.com/wp-content/uploads/2020/05/Plan-de-travail-1-2.svg) 10 12, pointer;
-    text-decoration: none;
-    color: black;
-}
-
-#risographie .interieur-risographie a:hover {
-    color: black!important
-}
-
-#risographie .diamond {
-    display: none;
-}
-
+// .pepite-tab-container input[type=radio]+label:nth-child(8)>* {
+//     color: black;
+// }
 
 /* Edition */
 
 #post-edition .content {
-    padding: 1.5rem;
-    padding-left: 0em;
-    padding-bottom: 4em;
+    position: relative;
+    padding: 1.5rem 0 0 0;
 }
 
 #post-edition .edition-item {
-    margin: 0px 0 auto;
+    margin: 10px 0 auto;
     padding: 0 5px;
     color: black;
 }
 
 #post-edition .modal {
     width: auto;
+    margin-top: 40px;
 }
 
 #post-edition a {
@@ -1000,12 +1179,8 @@ ul.advgb-tabs-panel li.advgb-tab.advgb-tab-active a {
     z-index: 1;
 }
 
-#post-edition .diamond {
-    margin-left: 2rem;
-}
-
 #post-edition p {
-    margin-bottom: 0em;
+    margin-bottom: 0;
 }
 
 .button.shopify:hover {
@@ -1170,128 +1345,6 @@ ul.advgb-tabs-panel li.advgb-tab.advgb-tab-active a {
 .texte-skew:hover {
     -webkit-transform: rotate(-4deg);
     transform: rotate(-4deg);
-}
-
-
-/* STUDIO:*/
-
-.c-upsell__text {
-    display: inline-block;
-    text-align: left;
-    position: relative;
-}
-
-.c-upsell__text:hover {
-    z-index: 22;
-    color: black;
-}
-
-.c-upsell__title {
-    line-height: 0.9;
-    letter-spacing: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.c-upsell__bg {
-    opacity: 0;
-    visibility: hidden;
-    //position: fixed;
-    max-width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    //z-index: 0;
-}
-
-.c-upsell__bg {
-    -webkit-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
-    -moz-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
-    -ms-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
-    -o-transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
-    transition: opacity .3s cubic-bezier(.45, 1.16, .85, 1.2);
-}
-
-.c-upsell__bg {
-    background-color: transparent;
-}
-
-.c-upsell__text:hover+.c-upsell__bg {
-    opacity: 1;
-    visibility: visible;
-}
-
-.c-upsell__text:hover+.c-upsell__bg img {
-    position: absolute;
-    animation-name: slideUp;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-figure {
-    margin: 0;
-}
-
-.c-upsell__bg img:first-child {
-    max-width: 42vw;
-    top: 20%;
-    left: 33%;
-    animation-duration: 25s;
-}
-
-.c-upsell__bg img:nth-child(2) {
-    max-width: 27vw;
-    top: 52%;
-    left: 2.6%;
-    animation-duration: 21s;
-}
-
-.c-upsell__bg img:nth-child(3) {
-    max-width: 30vw;
-    top: 96%;
-    left: 23%;
-    animation-duration: 23s;
-}
-
-.c-upsell__bg img:nth-child(4) {
-    max-width: 16vw;
-    top: 116%;
-    left: 0;
-    animation-duration: 18s;
-}
-
-.c-upsell__bg img:nth-child(5) {
-    max-width: 27vw;
-    top: 147%;
-    left: 43%;
-    animation-duration: 20s;
-}
-
-.c-upsell__bg img:nth-child(6) {
-    max-width: 32vw;
-    top: 180%;
-    left: 6%;
-    animation-duration: 19s;
-}
-
-@keyframes slideUp {
-    0% {
-        -webkit-transform: translateY(0);
-        -moz-transform: translateY(0);
-        -ms-transform: translateY(0);
-        -o-transform: translateY(0);
-        transform: translateY(0);
-    }
-    100% {
-        -webkit-transform: translateY(-150vh);
-        -moz-transform: translateY(-150vh);
-        -ms-transform: translateY(-150vh);
-        -o-transform: translateY(-150vh);
-        transform: translateY(-150vh);
-    }
 }
 
 
