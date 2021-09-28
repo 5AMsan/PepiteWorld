@@ -149,6 +149,17 @@ body {
     }
 }
 
+// https://github.com/5AMsan/PepiteWorld/issues/37
+// IPAD horizontal
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape){
+    .pepite-tab-container :not(#post-projet)>.content {
+        margin-bottom: 4rem;
+    }
+    .modal {
+        width: 80%;
+    }
+}
+
 // Glide
 @media screen and (max-width: 813px) {
     .glide__arrows {
@@ -184,12 +195,14 @@ body {
     //$mh: 580px;
     .glide,
     .glide__track,
-    ul.glide__slides,
-    .glide__slide {
+    ul.glide__slides {
         
         @media screen and (min-width: 813px) {
             // height: 580px;
             height: 100%;
+            .glide__slide {
+                height: auto;
+            }
         }
         @media screen and (min-width: 1441px) and (-webkit-min-device-pixel-ratio: 2), 
         screen and (min-width: 1441px) and (min-resolution: 192dpi) {
@@ -207,8 +220,10 @@ body {
             // height: 100%;
             // width: auto;
             width: 100%;
-            margin: 0 auto;
+            // margin: 0 auto;
             max-height: 1080px;
+            height: fit-content;
+            margin: auto;
             @media screen and (max-width: 813px) and (orientation: landscape) {
                 height: 100%;
             }
@@ -378,6 +393,18 @@ body {
         }
     }
 }
+@media only screen
+and (min-device-width: 813px)
+and (max-device-width: 1024px)
+and (orientation: landscape) {
+
+.video-contenu > .advgb-columns-container > .advgb-columns-row {
+flex-flow: column;
+}
+
+#risographie .nobr{
+display: none;
+}}
 
 // projet  layout
 $nav-width: 12rem;

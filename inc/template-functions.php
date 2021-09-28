@@ -178,7 +178,7 @@ if (!function_exists('pepite_world_content_lightbox')) {
 		$lightbox_fmts[] = '    <div tabindex="-1" data-micromodal-close>';
 		$lightbox_fmts[] = '        <div role="dialog" aria-modal="true" aria-labelledby="modal-%1$s-title">';
 		$lightbox_fmts[] = '            <header class="modal-header">';
-		$lightbox_fmts[] = '                <p id="modal-%1$s-title" class="modal-title">%3$s</p>';
+		$lightbox_fmts[] = '                <h1 id="modal-%1$s-title" class="modal-title">%3$s</h1>';
 		$lightbox_fmts[] = '                <!--<button aria-label="Close modal" data-micromodal-close>X</button>-->';
 		$lightbox_fmts[] = '            </header>';
 		$lightbox_fmts[] = '            <div id="modal-%1$s-content">';

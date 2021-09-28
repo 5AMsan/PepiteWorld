@@ -48,6 +48,15 @@ window.randomizeDrag = function($) {
     })
 }
 
+window.fadeProjetIn = function($) {
+    /* Delay Draggable and Infobar init*/
+    $('#post-projet .content').css('opacity', 0);
+    setTimeout(function(){
+        $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
+        window.randomizeDrag($);
+        $('#post-projet .content').animate({opacity:1}, 500);
+    }, 500);
+}
 
 jQuery(document).ready(function($) {
 
@@ -61,13 +70,14 @@ jQuery(document).ready(function($) {
         $('#post-projet .content').height() - padding
     ];
     
-    /* Delay Draggable init*/
-    $('#post-projet .content').css('opacity', 0);
-    setTimeout(function(){
-        $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
-        window.randomizeDrag($);
-        $('#post-projet .content').animate({opacity:1}, 500);
-    }, 500);
+    /* Delay Draggable and Infobar init*/
+    fadeProjetIn($);
+    // $('#post-projet .content').css('opacity', 0);
+    // setTimeout(function(){
+    //     $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
+    //     window.randomizeDrag($);
+    //     $('#post-projet .content').animate({opacity:1}, 500);
+    // }, 500);
 
     $(document).on('click', '[data-modal-close], [data-micromodal-close]', function() {
         // var modalId = $(this).data('modal-close') ? $(this).data('modal-close') : $(this).data('micromodal-close');
@@ -76,7 +86,7 @@ jQuery(document).ready(function($) {
     });
 
     // Risograpghie scroll watch
-    $(window).scroll(function() {
+    $(window).on("scroll", function() {
         var winTop = $(this).scrollTop();
         var $targets = $('#risographie .content h2[id]');
         $.each($targets, function(item) {

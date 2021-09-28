@@ -64,6 +64,11 @@ jQuery(function($) {
                 setTimeout(() => { glide.update() }, 2000);
             })
         }
+        // fade Projet...
+        // https://github.com/5AMsan/PepiteWorld/issues/53
+        if (link == '/direction-artistique/') {
+            window.fadeProjetIn($);
+        }
 
         // Hash URL only
         if (location.hash) {
@@ -97,10 +102,10 @@ jQuery(function($) {
                     })
                     // Content is loaded, run label animation
                 checkbox.prop('checked', true);
-
+                
                 switch (targetContainer) {
                     case 'projet':
-                        var init = location.pathname == '/direction-artistique/' ? initDrag() : [window.initMicroModal(), initInfobar(), initGlide()];
+                        var init = location.pathname == '/direction-artistique/' ? [initDrag()] : [window.initMicroModal(), initInfobar(false, true), initGlide()];
                         break;
                     case 'font':
                         initFontsampler();
@@ -143,11 +148,13 @@ jQuery(function($) {
         wp.hooks.doAction('wpshopify.render');
     }
 
-    function initInfobar(reset) {
+    function initInfobar(reset, close) {
         if (reset)
             $('.infobar').addClass('no-nav');
         else
             $('.infobar').removeClass('no-nav');
+        if (close)
+            $('#projet-nav').trigger('click');
     }
 
     function initVimeo($el, index) {
@@ -282,13 +289,14 @@ jQuery(function($) {
         try {
             // $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
             // window.randomizeDrag($);
+
             /* Delay Draggable init*/
             $('#post-projet .content').css('opacity', 0);
             setTimeout(function(){
                 $(".draggable").draggable({ containment: "#post-projet .content", scroll: false, stack: 'img', distance: 0 })
                 window.randomizeDrag($);
                 $('#post-projet .content').animate({opacity:1}, 500);
-            }, 5000);
+            }, 500);
         } catch (e) {
             console.error('Drag error: ', e);
         }
